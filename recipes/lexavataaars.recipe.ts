@@ -220,9 +220,16 @@ export const lexavataaars: Recipe = {
       values: ['#262e33', '#3c4f5c', '#6b5a45', '#8a7247', '#929598', '#4a3b32'],
       notEqualTo: ['skin'],
     },
-    /** The biretta, and nothing else now that hijab and turban are gone. */
+    /**
+     * The biretta, and nothing else now that hijab and turban are gone.
+     *
+     * `#e6e6e6` was in this list and was the single worst render in the style: a near-white square cap
+     * is a nurse's cap or a sailor's cap, and one of six draws landed on it. A biretta is black, or at
+     * most the dark of a faculty; there is no light one. What is left is five darks, which is also what
+     * keeps the cap legible at 16px, where it has to read against a pale skin tone.
+     */
     hat: {
-      values: ['#262e33', '#3c4f5c', '#4a4f55', '#5b4a3f', '#2f3a33', '#e6e6e6'],
+      values: ['#262e33', '#1c1c1e', '#3c4f5c', '#4a4f55', '#5b4a3f', '#2f3a33'],
       notEqualTo: ['skin'],
     },
   },

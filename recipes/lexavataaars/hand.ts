@@ -115,8 +115,17 @@ const collar: Element[] = [
  * upstream's tailoring.
  */
 const tie: Element[] = [
+  /*
+   * The blade's top edge is the knot's bottom edge lifted two units, so the two OVERLAP rather than abut.
+   *
+   * Drawn flush they shared an edge exactly, and two adjacent fills antialias against whatever is behind
+   * them rather than against each other: at the join each pixel came out part knot, part blade and part
+   * shirt, and a pale hairline traced the V under the knot at every size the tie was more than a few
+   * pixels wide. Since both pieces carry the same `accent` fill the overlap is invisible, and the knot is
+   * drawn over the blade so the silhouette is unchanged.
+   */
+  path('M91 50 100.5 54 110 50 114 95.31H87z', ACCENT),
   path('M93 40h15l2 12-9.5 4-9.5-4z', ACCENT),
-  path('M91 52 100.5 56 110 52 114 95.31H87z', ACCENT),
   // The blade's right face turned away from the light, and the shadow the knot casts on it.
   shade('M100.5 56 110 52 114 95.31h-13.5z', 0.1),
   shade('M91 52 100.5 56 110 52 110.8 60 100.5 64 90.2 60z', 0.14),
@@ -253,12 +262,34 @@ const GOWN_RIGHT =
  * At 10% white over pale linen that is almost invisible, so nothing in any screenshot ever looked wrong;
  * it was found by checking the gown's fill region against the band's coordinates rather than by looking.
  * Giving them a solid colour of their own is what makes the error impossible to hide again.
+ *
+ * Their TOP edge is the neckline, and this is the second version of that.
+ *
+ * Closed with `z` from an inner point at y ≈ 31 straight back to the notch, the facing ended in a chord
+ * running twelve units dead horizontal across the shoulder — a flat cut where the silk should turn up
+ * into the collar. It was invisible at 330px and unmissable at 9×: a stripe laid on a gown, stopping
+ * short, which is precisely the thing the facings exist not to be. Running the return curve up to
+ * (67, 15.65) and closing along the source's own half-neckline instead means the facing's top boundary
+ * and the gown's top boundary are the same curve, so the silk reaches the collar and turns with it.
  */
-const FACING_LEFT = `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-15C47 72 55 50 64 31z`
-const FACING_RIGHT = `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h15C154 72 146 50 137 31z`
+const FACING_LEFT =
+  `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-15C47 72 53 44 60.5 21L67 15.65${NECKLINE_HALF_REL}z`
+const FACING_RIGHT =
+  `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65` +
+  'c0 5.94-3.75 11.31-9.81 15.19z'
 /** The lit inner half of each facing. Silk is defined by its sheen, so a flat band is just a stripe. */
-const FACING_SHEEN_L = `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-6C53 73 60 51 69 32z`
-const FACING_SHEEN_R = `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h6C148 73 141 51 132 32z`
+const FACING_SHEEN_L =
+  `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-6C53 73 59 47 66 22L67 15.65${NECKLINE_HALF_REL}z`
+const FACING_SHEEN_R =
+  `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h6C148 73 142 47 135 22L134 15.65` +
+  'c0 5.94-3.75 11.31-9.81 15.19z'
+/*
+ * Lit on the left, shaded on the right, and only that.
+ *
+ * The left facing carried a 12% white sheen AND a 25% black band over nearly the same region, which is
+ * two contradictory light sources on one piece of cloth; the net was a facing darker than the one on the
+ * shaded side. The style has one light direction and every other shape in it obeys the same one.
+ */
 const gown: Element[] = [
   path(GOWN_LEFT, ROBE),
   path(GOWN_RIGHT, ROBE),
@@ -266,10 +297,9 @@ const gown: Element[] = [
   // consumer can set them independently of the gown body — and so they cannot silently vanish again.
   path(FACING_LEFT, FACING),
   path(FACING_RIGHT, FACING),
-  path(FACING_SHEEN_L, 'white', { 'fill-opacity': '.12' }),
-  path(FACING_SHEEN_R, 'white', { 'fill-opacity': '.07' }),
-  shade(FACING_RIGHT, 0.12),
-  shade(`M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-6C56 72 64 48 72 29z`, 0.25),
+  shade(FACING_RIGHT, 0.16),
+  path(FACING_SHEEN_L, 'white', { 'fill-opacity': '.16' }),
+  path(FACING_SHEEN_R, 'white', { 'fill-opacity': '.06' }),
 ]
 
 /*
@@ -288,19 +318,32 @@ const gown: Element[] = [
  * stock in life, so the thing that makes them legible is also the thing that makes them correct.
  */
 const bands: Element[] = [
-  // The stock has to run the full length of the tabs — stopped short at y = 49 it left the lower two
-  // thirds of each band white-on-white and the pair read as one small glyph — and its top edge has to be
-  // the neckline, or its square corners show as two steps against the collar behind it.
-  path(`${THROAT_SPAN}L112.4 74.5H88.6z`, ROBE),
-  // Widened from 7.6 to 9. Beside upstream's garments the first pair read as two hairlines rather than
-  // as linen; bands are a substantial thing at the throat and have to occupy real width to say so.
-  path('M90.6 38.5h9l-2.2 31.5a3.3 3.3 0 0 1-6.6-.3z', SHIRT),
-  path('M101.4 38.5h9l2.3 31.2a3.3 3.3 0 0 1-6.6.3z', SHIRT),
+  /*
+   * The stock has to run the full length of the tabs — stopped short at y = 49 it left the lower two
+   * thirds of each band white-on-white and the pair read as one small glyph — and its top edge has to be
+   * the neckline, or its square corners show as two steps against the collar behind it.
+   *
+   * Its bottom edge is bowed rather than cut square. A horizontal line across the chest is the one edge
+   * a garment never has, and at 440px the flat version read as a small dark bib laid on the shirt: the
+   * eye found the straight edge before it found the bands. The bow is shallow — five units over a span
+   * of twenty-seven — which is enough to say cloth without saying scallop.
+   */
+  path(`${THROAT_SPAN}L114 84Q100.5 89 87 84z`, ROBE),
+  /*
+   * Widened from 7.6 to 9, then lengthened from 31.5 to 42.
+   *
+   * Beside upstream's garments the first pair read as two hairlines; widening fixed that but left them
+   * stubby — they stopped a third of the way down the visible chest, and against the jabot in the same
+   * wardrobe they read as its top tier rather than as a different thing. Bands hang. At 42 they occupy
+   * the chest the way linen does and the two court variants no longer collapse into each other at 112px.
+   */
+  path('M90.6 38.5h9l-2.6 42a3.4 3.4 0 0 1-6.8-.35z', SHIRT),
+  path('M110.4 38.5h-9l2.6 42a3.4 3.4 0 0 0 6.8-.35z', SHIRT),
   // Lit at the top where they leave the stock, shaded down the inner edge where they fall away.
   path('M90.6 38.5h9l-.15 2.4h-9z', 'white', { 'fill-opacity': '.55' }),
   path('M101.4 38.5h9l.17 2.4h-9z', 'white', { 'fill-opacity': '.55' }),
-  shade('M97.4 38.5h2.2l-2.2 31.5a3.3 3.3 0 0 1-2.4 1.1z', 0.1),
-  shade('M110.4 38.5h-2.2l2.3 31.2a3.3 3.3 0 0 0 2.4 1.1z', 0.16),
+  shade('M97.4 38.5h2.2l-2.6 42a3.4 3.4 0 0 1-2.5 1.15z', 0.1),
+  shade('M110.4 38.5h-2.2l2.6 42a3.4 3.4 0 0 0 2.5 1.15z', 0.16),
 ]
 
 /**
@@ -317,15 +360,21 @@ const jabot: Element[] = [
    * hangs — three equal-width tiers are a stack of blocks, not a jabot. Each tier is lit on its upper
    * face and shaded where the tier below tucks under it, so the stack has depth instead of being an
    * outline drawing. And the ground now follows the lace rather than boxing it.
+   *
+   * Then scaled up: 21 → 41 units across the bottom tier and 22 → 32 units tall. At the old size it and
+   * `gownAndBands` were the same small white glyph on black at 112px, which is the size the product
+   * actually renders — two variants that cost a wardrobe slot each and were indistinguishable where it
+   * counted. A jabot's whole claim against bands is that it is broad and tiered where they are narrow
+   * and parallel, so it has to be visibly the wider of the two.
    */
-  path(`${THROAT_SPAN}L115 60.5q-7.5 6-14.5 0-7 6-14.5 0z`, ROBE),
-  path('M90 37h21v4q-5.25 5-10.5 0-5.25 5-10.5 0z', SHIRT),
-  shade('M90 41q5.25 5 10.5 0 5.25 5 10.5 0v1.6q-5.25 5-10.5 0-5.25 5-10.5 0z', 0.09),
-  path('M87.5 44h26v4.5q-6.5 5.5-13 0-6.5 5.5-13 0z', SHIRT),
-  shade('M87.5 48.5q6.5 5.5 13 0 6.5 5.5 13 0v1.7q-6.5 5.5-13 0-6.5 5.5-13 0z', 0.09),
-  path('M85 53.5h31v5q-7.75 6-15.5 0-7.75 6-15.5 0z', SHIRT),
+  path(`${THROAT_SPAN}L122 68.5q-10.75 7-21.5 0-10.75 7-21.5 0z`, ROBE),
+  path('M88 37h25v6q-6.25 5.5-12.5 0-6.25 5.5-12.5 0z', SHIRT),
+  shade('M88 43q6.25 5.5 12.5 0 6.25 5.5 12.5 0v2.1q-6.25 5.5-12.5 0-6.25 5.5-12.5 0z', 0.09),
+  path('M84 46h33v8q-8.25 6.5-16.5 0-8.25 6.5-16.5 0z', SHIRT),
+  shade('M84 54q8.25 6.5 16.5 0 8.25 6.5 16.5 0v2.3q-8.25 6.5-16.5 0-8.25 6.5-16.5 0z', 0.09),
+  path('M80 57h41v10q-10.25 7-20.5 0-10.25 7-20.5 0z', SHIRT),
   // The lit upper face of each fall, which is what makes them read as separate pieces of cloth.
-  path('M90 37h21v1.8H90zm-2.5 7h26v1.8h-26zm-2.5 9.5h31v1.8H85z', 'white', { 'fill-opacity': '.5' }),
+  path('M88 37h25v2.2H88zm-4 9h33v2.2H84zm-4 11h41v2.2H80z', 'white', { 'fill-opacity': '.5' }),
 ]
 
 /**
@@ -336,10 +385,22 @@ const jabot: Element[] = [
  * as. Both bands are solved to stay inside the shoulder arcs at every height they cross.
  */
 const hood: Element[] = [
-  path('M64 20C60 42 52 58 38 70L20 56C36 46 46 34 50 20z', ACCENT),
-  path('M136 20c4 22 12 38 26 50l18-14c-16-10-26-22-30-36z', ACCENT),
-  path('M64 20C60 42 52 58 38 70l-6-4.6C45 53 52 38 56 20z', 'white', { 'fill-opacity': '.22' }),
-  path('M136 20c4 22 12 38 26 50l6-4.6C155 53 148 38 144 20z', 'white', { 'fill-opacity': '.22' }),
+  /*
+   * Each band starts at (67, 17) and (134, 17) — the two points where the source's neckline meets the
+   * shoulder — so it emerges from beside the neck instead of beginning in mid-shoulder.
+   *
+   * It began at x = 64 with a top edge cut dead horizontal six units inside the gown's own shoulder arc,
+   * and on a dark ground at 6× that gap was unmissable: a strap with a squared-off end, floating, with
+   * gown visible above and outside it. A hood is attached at the neck and nowhere else, so that is where
+   * it has to start, and it is the one place on the shoulder that reads as attachment.
+   *
+   * The far end is a rounded foot rather than a straight cut across the shoulder, for the same reason
+   * the biretta's hair crescent has one: a chord across a curved form reads as an amputation.
+   */
+  path('M67 17C63 41 54 59 39 72Q31 66 21 58C37 47 44 32 47 21z', ACCENT),
+  path('M134 17c4 24 13 42 28 55q8-6 18-14c-16-11-23-26-26-37z', ACCENT),
+  path('M67 17C63 41 54 59 39 72l-6-4.6C48 58 56 40 60 19z', 'white', { 'fill-opacity': '.22' }),
+  path('M134 17c4 24 13 42 28 55l6-4.6C153 58 145 40 141 19z', 'white', { 'fill-opacity': '.22' }),
 ]
 
 const shirtBody: Element[] = [path(TORSO, SHIRT), shade(NECK_SHADOW, 0.1)]
@@ -398,37 +459,64 @@ const biretta: Element[] = [
    * The hair is a crescent between two arcs concentric with the skull — r = 58 outside it and r = 44
    * inside — so it cannot detach from the head however the cap above it changes. Drawn freehand it came
    * out as a thin dark spike floating clear of the temple, which was the worst defect in the style.
-   * Its top edge is a flat chord at y = 56, one unit inside the crown's edge at that height, and its
-   * foot is rounded rather than cut off square — a radial chop across the cheek reads as a shaved
+   * Its foot is rounded rather than cut off square: a radial chop across the cheek reads as a shaved
    * sideburn, which is a haircut nobody on this bench has.
-   */
-  path('M86.5 56A58 58 0 0 0 80.6 112Q84 118 90.4 106A44 44 0 0 1 106.7 56z', HAIR),
-  path('M177.5 56A58 58 0 0 1 183.4 112Q180 118 173.6 106A44 44 0 0 0 157.3 56z', HAIR),
-  /*
-   * The crown's sides bow outward instead of running dead straight, and its top corners are rounded.
    *
-   * Beside upstream's turban the straight-sided version read as machined — a lampshade rather than a
-   * cap. Nothing upstream has a straight edge of this length or a corner this sharp; every form it
-   * draws is bowed. A biretta is an angular object and this style contains no angular objects, so the
-   * register is bought by softening every edge that can be softened without losing what it is.
+   * Its top chord is at y = 74, two units under the crown's own edge where the two meet, so the crown
+   * covers the join. At y = 56 — where it sat while the crown rode high — a full fifteen units of hair
+   * showed above the temple and the pair read as a swimming cap over a bandana.
    */
-  path('M105 34h54a5 5 0 0 1 4 2C170 46 178 56 186 66Q132 81 78 66C86 56 94 46 101 36a5 5 0 0 1 4-2z', HAT),
+  path('M76.9 74A58 58 0 0 0 77.6 112Q81 118 90.3 106A44 44 0 0 1 91.9 74z', HAIR),
+  path('M187.1 74A58 58 0 0 1 186.4 112Q183 118 173.7 106A44 44 0 0 0 172.1 74z', HAIR),
+  /*
+   * The crown, and the whole shape of this variant is in where its base sits.
+   *
+   * It sat at y = 66 at the sides, which is 26 units below the top of a skull that is 112 across — a cap
+   * covering only the crown of the head, with a wide band of hair under it. It read as a shower cap, and
+   * on the wall at 112px as a spinning top. The base is now y = 76 at the sides and dips to y = 91 at
+   * the centre, three units clear of the brow at 94, so the cap sits ON the head the way a cap does.
+   *
+   * The dip is the second half of that read. A straight edge laid across a dome touches it only at the
+   * middle and reads as a plank balanced on a head; a base that hangs lowest at the centre is a band
+   * wrapping the skull, seen level. Because the control point is (132, 106) the horizontal component of
+   * that quadratic is exactly linear, so every shading shape below can be split off it arithmetically.
+   *
+   * The sides are near-cylindrical — 120 across at the base, 92 at the top — rather than the strong cone
+   * they were. A cone under a board is a lampshade, and the board then reads as a plate balanced on it.
+   */
+  path('M82 46h100a5 5 0 0 1 4 3C186 58 188 67 190 76Q132 106 74 76C76 67 78 58 78 49a5 5 0 0 1 4-3z', HAT),
+  /*
+   * The board oversails the crown rather than being narrower than it, and it is a plate rather than a
+   * pill.
+   *
+   * At 100 wide over a 62-wide crown top it was a mushroom — bottom-heavy, top-heavy and pinched in the
+   * middle, which is three objects stacked. Widening it fixed the stack but a 6-unit radius on a 12-unit
+   * bar is a full half-round end, and a soft white pill over a flaring crown is a nurse's cap. A
+   * biretta's plate is stiff: `rx` is 3.5 on a height of 14, so the corners are eased rather than
+   * rolled, and the crown's flare is cut from 14 units a side to 8 so it stops reading as an upturned
+   * bucket.
+   */
   {
     type: 'element',
     name: 'rect',
-    attributes: { x: '82', y: '22', width: '100', height: '13', rx: '6.5', fill: HAT },
+    attributes: { x: '74', y: '32', width: '116', height: '14', rx: '3.5', fill: HAT },
   },
-  { type: 'element', name: 'circle', attributes: { cx: '132', cy: '17', r: '6.5', fill: HAT } },
-  // Lit on the left, shaded under the brim and down the right — one light direction, as upstream uses.
-  // The lit face stops short of the centre line. Carried all the way to x = 132 it drew a hard vertical
-  // seam down the cap and split it into two halves.
-  path('M105 34h12c-3 12-7 22-12 30Q90 64.5 78 66C86 56 94 46 101 36a5 5 0 0 1 4-2z', 'white', {
+  // The tuft, sunk into the board so it is part of the cap rather than a knob on a stalk.
+  { type: 'element', name: 'circle', attributes: { cx: '132', cy: '29', r: '6.5', fill: HAT } },
+  /*
+   * Lit on the left, shaded under the board and down its right — one light direction, as upstream uses.
+   *
+   * The lit face closes along the crown's own base curve rather than along a guessed one. Its foot is
+   * the point of that quadratic at x = 90, and its control point is that quadratic's own control split
+   * at the same parameter, so it cannot poke below the cap and print a white sliver on the forehead.
+   */
+  path('M82 46h14c-1.5 13-3.5 26-6 37.14Q82 80.14 74 76C76 67 78 58 78 49a5 5 0 0 1 4-3z', 'white', {
     'fill-opacity': '.09',
   }),
-  shade('M78 66Q132 81 186 66l-3-6Q132 73 81 60z', 0.14),
-  // Follows the board's own rounded end. Drawn to x = 182 with its own 6.5 arc it overshot the pill by
-  // a full radius and hung a grey tab off the right of the brim.
-  shade('M132 22h43.5a6.5 6.5 0 0 1 0 13H132z', 0.1),
+  shade('M82 46h100l-2 8q-48 5-96 0z', 0.14),
+  // Follows the board's own corner radius. Drawn past it with a radius of its own it overshot the plate
+  // and hung a grey tab off the right of the brim.
+  shade('M132 32h54.5a3.5 3.5 0 0 1 3.5 3.5v7a3.5 3.5 0 0 1-3.5 3.5H132z', 0.1),
 ]
 
 /**

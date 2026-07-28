@@ -282,11 +282,11 @@
     "hat": {
       "values": [
         "#262e33",
+        "#1c1c1e",
         "#3c4f5c",
         "#4a4f55",
         "#5b4a3f",
-        "#2f3a33",
-        "#e6e6e6"
+        "#2f3a33"
       ],
       "notEqualTo": [
         "skin"
@@ -393,7 +393,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
+                "d": "M91 50 100.5 54 110 50 114 95.31H87z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -404,7 +404,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M91 52 100.5 56 110 52 114 95.31H87z",
+                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -703,7 +703,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
+                "d": "M91 50 100.5 54 110 50 114 95.31H87z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -714,7 +714,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M91 52 100.5 56 110 52 114 95.31H87z",
+                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -907,7 +907,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
+                "d": "M91 50 100.5 54 110 50 114 95.31H87z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -918,7 +918,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M91 52 100.5 56 110 52 114 95.31H87z",
+                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -1454,7 +1454,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
+                "d": "M91 50 100.5 54 110 50 114 95.31H87z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -1465,7 +1465,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M91 52 100.5 56 110 52 114 95.31H87z",
+                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -1785,7 +1785,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
+                "d": "M91 50 100.5 54 110 50 114 95.31H87z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -1796,7 +1796,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M91 52 100.5 56 110 52 114 95.31H87z",
+                "d": "M93 40h15l2 12-9.5 4-9.5-4z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -2153,7 +2153,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 55 50 64 31z",
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 53 44 60.5 21L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2164,7 +2164,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2175,36 +2175,27 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 60 51 69 32z",
-                "fill": "white",
-                "fill-opacity": ".12"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 141 51 132 32z",
-                "fill": "white",
-                "fill-opacity": ".07"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": "black",
-                "fill-opacity": "0.12"
+                "fill-opacity": "0.16"
               }
             },
             {
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C56 72 64 48 72 29z",
-                "fill": "black",
-                "fill-opacity": "0.25"
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 59 47 66 22L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".16"
+              }
+            },
+            {
+              "type": "element",
+              "name": "path",
+              "attributes": {
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 142 47 135 22L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".06"
               }
             }
           ],
@@ -2305,7 +2296,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73L112.4 74.5H88.6z",
+                "d": "M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73L114 84Q100.5 89 87 84z",
                 "fill": {
                   "type": "color",
                   "name": "robe"
@@ -2316,7 +2307,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M90.6 38.5h9l-2.2 31.5a3.3 3.3 0 0 1-6.6-.3z",
+                "d": "M90.6 38.5h9l-2.6 42a3.4 3.4 0 0 1-6.8-.35z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2327,7 +2318,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M101.4 38.5h9l2.3 31.2a3.3 3.3 0 0 1-6.6.3z",
+                "d": "M110.4 38.5h-9l2.6 42a3.4 3.4 0 0 0 6.8-.35z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2356,7 +2347,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M97.4 38.5h2.2l-2.2 31.5a3.3 3.3 0 0 1-2.4 1.1z",
+                "d": "M97.4 38.5h2.2l-2.6 42a3.4 3.4 0 0 1-2.5 1.15z",
                 "fill": "black",
                 "fill-opacity": "0.1"
               }
@@ -2365,7 +2356,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M110.4 38.5h-2.2l2.3 31.2a3.3 3.3 0 0 0 2.4 1.1z",
+                "d": "M110.4 38.5h-2.2l2.6 42a3.4 3.4 0 0 0 2.5 1.15z",
                 "fill": "black",
                 "fill-opacity": "0.16"
               }
@@ -2396,7 +2387,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 55 50 64 31z",
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 53 44 60.5 21L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2407,7 +2398,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2418,36 +2409,27 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 60 51 69 32z",
-                "fill": "white",
-                "fill-opacity": ".12"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 141 51 132 32z",
-                "fill": "white",
-                "fill-opacity": ".07"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": "black",
-                "fill-opacity": "0.12"
+                "fill-opacity": "0.16"
               }
             },
             {
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C56 72 64 48 72 29z",
-                "fill": "black",
-                "fill-opacity": "0.25"
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 59 47 66 22L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".16"
+              }
+            },
+            {
+              "type": "element",
+              "name": "path",
+              "attributes": {
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 142 47 135 22L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".06"
               }
             }
           ],
@@ -2548,7 +2530,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73L115 60.5q-7.5 6-14.5 0-7 6-14.5 0z",
+                "d": "M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73L122 68.5q-10.75 7-21.5 0-10.75 7-21.5 0z",
                 "fill": {
                   "type": "color",
                   "name": "robe"
@@ -2559,7 +2541,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M90 37h21v4q-5.25 5-10.5 0-5.25 5-10.5 0z",
+                "d": "M88 37h25v6q-6.25 5.5-12.5 0-6.25 5.5-12.5 0z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2570,7 +2552,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M90 41q5.25 5 10.5 0 5.25 5 10.5 0v1.6q-5.25 5-10.5 0-5.25 5-10.5 0z",
+                "d": "M88 43q6.25 5.5 12.5 0 6.25 5.5 12.5 0v2.1q-6.25 5.5-12.5 0-6.25 5.5-12.5 0z",
                 "fill": "black",
                 "fill-opacity": "0.09"
               }
@@ -2579,7 +2561,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M87.5 44h26v4.5q-6.5 5.5-13 0-6.5 5.5-13 0z",
+                "d": "M84 46h33v8q-8.25 6.5-16.5 0-8.25 6.5-16.5 0z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2590,7 +2572,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M87.5 48.5q6.5 5.5 13 0 6.5 5.5 13 0v1.7q-6.5 5.5-13 0-6.5 5.5-13 0z",
+                "d": "M84 54q8.25 6.5 16.5 0 8.25 6.5 16.5 0v2.3q-8.25 6.5-16.5 0-8.25 6.5-16.5 0z",
                 "fill": "black",
                 "fill-opacity": "0.09"
               }
@@ -2599,7 +2581,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M85 53.5h31v5q-7.75 6-15.5 0-7.75 6-15.5 0z",
+                "d": "M80 57h41v10q-10.25 7-20.5 0-10.25 7-20.5 0z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2610,7 +2592,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M90 37h21v1.8H90zm-2.5 7h26v1.8h-26zm-2.5 9.5h31v1.8H85z",
+                "d": "M88 37h25v2.2H88zm-4 9h33v2.2H84zm-4 11h41v2.2H80z",
                 "fill": "white",
                 "fill-opacity": ".5"
               }
@@ -2641,7 +2623,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 55 50 64 31z",
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 53 44 60.5 21L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2652,7 +2634,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2663,36 +2645,27 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 60 51 69 32z",
-                "fill": "white",
-                "fill-opacity": ".12"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 141 51 132 32z",
-                "fill": "white",
-                "fill-opacity": ".07"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": "black",
-                "fill-opacity": "0.12"
+                "fill-opacity": "0.16"
               }
             },
             {
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C56 72 64 48 72 29z",
-                "fill": "black",
-                "fill-opacity": "0.25"
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 59 47 66 22L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".16"
+              }
+            },
+            {
+              "type": "element",
+              "name": "path",
+              "attributes": {
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 142 47 135 22L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".06"
               }
             }
           ],
@@ -2793,7 +2766,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73L112.4 74.5H88.6z",
+                "d": "M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73L114 84Q100.5 89 87 84z",
                 "fill": {
                   "type": "color",
                   "name": "robe"
@@ -2804,7 +2777,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M90.6 38.5h9l-2.2 31.5a3.3 3.3 0 0 1-6.6-.3z",
+                "d": "M90.6 38.5h9l-2.6 42a3.4 3.4 0 0 1-6.8-.35z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2815,7 +2788,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M101.4 38.5h9l2.3 31.2a3.3 3.3 0 0 1-6.6.3z",
+                "d": "M110.4 38.5h-9l2.6 42a3.4 3.4 0 0 0 6.8-.35z",
                 "fill": {
                   "type": "color",
                   "name": "shirt"
@@ -2844,7 +2817,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M97.4 38.5h2.2l-2.2 31.5a3.3 3.3 0 0 1-2.4 1.1z",
+                "d": "M97.4 38.5h2.2l-2.6 42a3.4 3.4 0 0 1-2.5 1.15z",
                 "fill": "black",
                 "fill-opacity": "0.1"
               }
@@ -2853,7 +2826,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M110.4 38.5h-2.2l2.3 31.2a3.3 3.3 0 0 0 2.4 1.1z",
+                "d": "M110.4 38.5h-2.2l2.6 42a3.4 3.4 0 0 0 2.5 1.15z",
                 "fill": "black",
                 "fill-opacity": "0.16"
               }
@@ -2884,7 +2857,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 55 50 64 31z",
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-15C47 72 53 44 60.5 21L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2895,7 +2868,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": {
                   "type": "color",
                   "name": "facing"
@@ -2906,43 +2879,34 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 60 51 69 32z",
-                "fill": "white",
-                "fill-opacity": ".12"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 141 51 132 32z",
-                "fill": "white",
-                "fill-opacity": ".07"
-              }
-            },
-            {
-              "type": "element",
-              "name": "path",
-              "attributes": {
-                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 146 50 137 31z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h15C154 72 148 44 140.5 21L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
                 "fill": "black",
-                "fill-opacity": "0.12"
+                "fill-opacity": "0.16"
               }
             },
             {
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C56 72 64 48 72 29z",
-                "fill": "black",
-                "fill-opacity": "0.25"
+                "d": "M76.81 30.84C70 50 62 74 60 95.31h-6C53 73 59 47 66 22L67 15.65c0 5.94 3.75 11.31 9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".16"
               }
             },
             {
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M64 20C60 42 52 58 38 70L20 56C36 46 46 34 50 20z",
+                "d": "M124.19 30.84C130 50 138 74 140 95.31h6C148 73 142 47 135 22L134 15.65c0 5.94-3.75 11.31-9.81 15.19z",
+                "fill": "white",
+                "fill-opacity": ".06"
+              }
+            },
+            {
+              "type": "element",
+              "name": "path",
+              "attributes": {
+                "d": "M67 17C63 41 54 59 39 72Q31 66 21 58C37 47 44 32 47 21z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -2953,7 +2917,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M136 20c4 22 12 38 26 50l18-14c-16-10-26-22-30-36z",
+                "d": "M134 17c4 24 13 42 28 55q8-6 18-14c-16-11-23-26-26-37z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -2964,7 +2928,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M64 20C60 42 52 58 38 70l-6-4.6C45 53 52 38 56 20z",
+                "d": "M67 17C63 41 54 59 39 72l-6-4.6C48 58 56 40 60 19z",
                 "fill": "white",
                 "fill-opacity": ".22"
               }
@@ -2973,7 +2937,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M136 20c4 22 12 38 26 50l6-4.6C155 53 148 38 144 20z",
+                "d": "M134 17c4 24 13 42 28 55l6-4.6C153 58 145 40 141 19z",
                 "fill": "white",
                 "fill-opacity": ".22"
               }
@@ -3729,7 +3693,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M86.5 56A58 58 0 0 0 80.6 112Q84 118 90.4 106A44 44 0 0 1 106.7 56z",
+                "d": "M76.9 74A58 58 0 0 0 77.6 112Q81 118 90.3 106A44 44 0 0 1 91.9 74z",
                 "fill": {
                   "type": "color",
                   "name": "hair"
@@ -3740,7 +3704,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M177.5 56A58 58 0 0 1 183.4 112Q180 118 173.6 106A44 44 0 0 0 157.3 56z",
+                "d": "M187.1 74A58 58 0 0 1 186.4 112Q183 118 173.7 106A44 44 0 0 0 172.1 74z",
                 "fill": {
                   "type": "color",
                   "name": "hair"
@@ -3751,7 +3715,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M105 34h54a5 5 0 0 1 4 2C170 46 178 56 186 66Q132 81 78 66C86 56 94 46 101 36a5 5 0 0 1 4-2z",
+                "d": "M82 46h100a5 5 0 0 1 4 3C186 58 188 67 190 76Q132 106 74 76C76 67 78 58 78 49a5 5 0 0 1 4-3z",
                 "fill": {
                   "type": "color",
                   "name": "hat"
@@ -3762,11 +3726,11 @@
               "type": "element",
               "name": "rect",
               "attributes": {
-                "x": "82",
-                "y": "22",
-                "width": "100",
-                "height": "13",
-                "rx": "6.5",
+                "x": "74",
+                "y": "32",
+                "width": "116",
+                "height": "14",
+                "rx": "3.5",
                 "fill": {
                   "type": "color",
                   "name": "hat"
@@ -3778,7 +3742,7 @@
               "name": "circle",
               "attributes": {
                 "cx": "132",
-                "cy": "17",
+                "cy": "29",
                 "r": "6.5",
                 "fill": {
                   "type": "color",
@@ -3790,7 +3754,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M105 34h12c-3 12-7 22-12 30Q90 64.5 78 66C86 56 94 46 101 36a5 5 0 0 1 4-2z",
+                "d": "M82 46h14c-1.5 13-3.5 26-6 37.14Q82 80.14 74 76C76 67 78 58 78 49a5 5 0 0 1 4-3z",
                 "fill": "white",
                 "fill-opacity": ".09"
               }
@@ -3799,7 +3763,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M78 66Q132 81 186 66l-3-6Q132 73 81 60z",
+                "d": "M82 46h100l-2 8q-48 5-96 0z",
                 "fill": "black",
                 "fill-opacity": "0.14"
               }
@@ -3808,7 +3772,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M132 22h43.5a6.5 6.5 0 0 1 0 13H132z",
+                "d": "M132 32h54.5a3.5 3.5 0 0 1 3.5 3.5v7a3.5 3.5 0 0 1-3.5 3.5H132z",
                 "fill": "black",
                 "fill-opacity": "0.1"
               }
