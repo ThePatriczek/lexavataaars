@@ -5,6 +5,7 @@
   "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "forge": "bun run --cwd packages/forge src/cli.ts",
+    "site": "bun run scripts/build-site.ts",
     "test": "bun test",
     "typecheck": "tsc --build --force"
   },

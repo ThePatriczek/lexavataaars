@@ -15,5 +15,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["packages/*/src/**/*", "recipes/**/*", "tests/**/*"]
+  "include": ["packages/*/src/**/*", "recipes/**/*", "scripts/**/*", "tests/**/*"]
 }
