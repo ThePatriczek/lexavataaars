@@ -11,3 +11,6 @@ dist/
 
 # Discarded branches, kept out of the build but not deleted (no git yet)
 .archive/
+
+# Build output
+dist/

@@ -1,20 +1,44 @@
 {
   "name": "lexavataaars",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
-  "description": "Elegant, deterministic legal avatars. A DiceBear style for law and legal-tech products.",
-  "keywords": ["avatar", "dicebear", "legal", "svg", "identicon"],
+  "description": "Deterministic avatars for legal software — judges, prosecutors, notaries and advocates, in business formal and court dress. A DiceBear-compatible style.",
+  "keywords": ["avatar", "dicebear", "legal", "legaltech", "svg", "identicon", "avataaars"],
   "license": "MIT",
   "author": "Patrik Szewczyk",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ThePatriczek/lexavataaars.git"
   },
-  "exports": {
-    ".": "./src/index.ts"
+  "homepage": "https://github.com/ThePatriczek/lexavataaars#readme",
+  "bugs": {
+    "url": "https://github.com/ThePatriczek/lexavataaars/issues"
   },
-  "files": ["src", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./definition.json": "./dist/lexavataaars.json"
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "bun run build:js && bun run build:types && bun run build:json",
+    "build:js": "bun build src/index.ts --outdir dist --target node --format esm --external '@dicebear/core'",
+    "build:types": "tsc -p tsconfig.build.json",
+    "build:json": "cp src/styles/lexavataaars.json dist/lexavataaars.json",
+    "prepublishOnly": "bun run build"
+  },
   "dependencies": {
     "@dicebear/core": "^10.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
