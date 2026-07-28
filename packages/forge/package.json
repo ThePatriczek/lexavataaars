@@ -1,0 +1,15 @@
+{
+  "name": "@lexavataaars/forge",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build-time pipeline that turns permissively licensed SVG icons into a DiceBear style definition. Not published.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@dicebear/schema": "^1.3.0",
+    "ajv": "^8.17.1",
+    "svgson": "^5.3.1"
+  }
+}

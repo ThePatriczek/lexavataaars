@@ -1,0 +1,20 @@
+{
+  "name": "lexavataaars-monorepo",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "forge": "bun run --cwd packages/forge src/cli.ts",
+    "test": "bun test",
+    "typecheck": "tsc --build --force"
+  },
+  "devDependencies": {
+    "@dicebear/core": "^10.3.1",
+    "@lexavataaars/forge": "workspace:*",
+    "@types/bun": "latest",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "bun": ">=1.2.0"
+  }
+}

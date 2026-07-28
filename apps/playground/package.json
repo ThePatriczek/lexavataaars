@@ -1,0 +1,14 @@
+{
+  "name": "@lexavataaars/playground",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Visual review surface for tuning a recipe. Not published.",
+  "scripts": {
+    "dev": "bun --hot src/server.ts",
+    "export": "bun src/export.ts"
+  },
+  "dependencies": {
+    "lexavataaars": "workspace:*"
+  }
+}

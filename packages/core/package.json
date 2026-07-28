@@ -1,0 +1,20 @@
+{
+  "name": "lexavataaars",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Elegant, deterministic legal avatars. A DiceBear style for law and legal-tech products.",
+  "keywords": ["avatar", "dicebear", "legal", "svg", "identicon"],
+  "license": "MIT",
+  "author": "Patrik Szewczyk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThePatriczek/lexavataaars.git"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": ["src", "README.md", "LICENSE"],
+  "dependencies": {
+    "@dicebear/core": "^10.3.1"
+  }
+}

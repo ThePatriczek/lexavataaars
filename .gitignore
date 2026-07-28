@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+
+# Iconify response cache — regenerable, not committed
+.cache/
+
+# Design review screenshots — regenerable
+.review/
+
+# Discarded branches, kept out of the build but not deleted (no git yet)
+.archive/

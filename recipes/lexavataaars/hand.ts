@@ -1,0 +1,596 @@
+/**
+ * Everything drawn or edited by hand for `lexavataaars`.
+ *
+ * The rule for this file is the one in the brief: derive, don't redraw. Every garment below is built on
+ * geometry already present in the source — the blazer's shirt body, its shoulder arcs, its neckline, its
+ * lapels — so a new variant lands in register with the head by construction rather than by nudging
+ * numbers until it looks right. Where a coordinate is stated literally it was solved from the source's
+ * own circles, not guessed:
+ *
+ *   Torso. The shoulders are two 72-unit arcs centred at (72, 86.36) and (128, 86.36); the body is
+ *   therefore bounded by |x - centre| = √(72² - (86.36 - y)²) and squared off at y = 95.31. Every panel
+ *   here is checked against that envelope, which is why nothing spills past a shoulder.
+ *
+ *   Neckline. One ellipse arc from (67, 15.65) through (100.5, 37.13) to (134, 15.65). Collars, gown
+ *   fronts and the hood all start on it, so the garment meets the throat instead of crossing it.
+ *
+ *   Mirror. The source's own axis is x = 100 in clothes space and x = 132 in top space (the skull is a
+ *   56-unit circle centred there). Right-hand halves are those reflections, not fresh drawings.
+ *
+ * Shading follows the source's single idiom throughout: black at a low `fill-opacity`, never a second
+ * hue. That is what makes an added garment sit at the same depth as a shipped one.
+ */
+
+import type { Element } from '@lexavataaars/forge'
+
+const CLOTHES = { type: 'color' as const, name: 'clothes' }
+const ROBE = { type: 'color' as const, name: 'robe' }
+const FACING = { type: 'color' as const, name: 'facing' }
+const SHIRT = { type: 'color' as const, name: 'shirt' }
+const ACCENT = { type: 'color' as const, name: 'accent' }
+const HAIR = { type: 'color' as const, name: 'hair' }
+const HAT = { type: 'color' as const, name: 'hat' }
+const WIG = { type: 'color' as const, name: 'wig' }
+
+type Fill = string | { type: 'color'; name: string }
+
+function path(d: string, fill: Fill, extra: Record<string, string> = {}): Element {
+  return { type: 'element', name: 'path', attributes: { d, fill, ...extra } }
+}
+
+/** The source's shading gesture: black, low opacity, no hue of its own. */
+function shade(d: string, opacity: number): Element {
+  return path(d, 'black', { 'fill-opacity': String(opacity) })
+}
+
+// ---------------------------------------------------------------------------------------------------
+// clothes — 200 × 95.31, placed at translate(40 184.7)
+// ---------------------------------------------------------------------------------------------------
+
+/** The blazer's own torso, reused unchanged as the shirt every garment is layered onto. */
+const TORSO =
+  'M100.5 37.13c18.5 0 33.5-9.61 33.5-21.48q0-.52-.04-1.05A72 72 0 0 1 200 86.36v8.95H0v-8.95' +
+  'a72 72 0 0 1 67.05-71.83q-.05.55-.05 1.12c0 11.87 15 21.48 33.5 21.48'
+
+/** The source's neck shadow, which is what keeps the head from looking pasted onto the shoulders. */
+const NECK_SHADOW =
+  'M100.5 44.07c21.89 0 39.63-12.05 39.63-26.92q0-.9-.08-1.79-3-.51-6.1-.76.06.52.05 1.05' +
+  'c0 11.87-15 21.48-33.5 21.48S67 27.52 67 15.65q0-.57.05-1.12-3.08.2-6.08.67-.1.97-.1 1.95' +
+  'c0 14.87 17.74 26.92 39.63 26.92'
+
+/** Blazer fronts, lapel-fold shadow and pocket square, all lifted from `blazerAndShirt` unaltered. */
+const JACKET_FRONTS =
+  'M68.78 14.43 69 13.3c-2.96.06-6 1-6 1l-.42.67A72 72 0 0 0 0 86.36v8.95h74s-10.7-51.56-5.24-80.8z' +
+  'M126 95.3s11-53 5-82c2.96.06 6 1 6 1l.42.67A72 72 0 0 1 200 86.36v8.95z'
+const LAPEL_FOLD =
+  'M69 13.3c-6 29 5 82 5 82H58l-14-36 6-9-6-6 19-30s3.04-.94 6-1' +
+  'm62 0c6 29-5 82-5 82h16l14-36-6-9 6-6-19-30s-3.04-.94-6-1'
+const POCKET_SQUARE = 'm151.42 71.07.87-2.24 6.27-4.7a4 4 0 0 1 4.85.05l6.6 5.13z'
+
+/**
+ * The shirt collar the source never needed, because a blazer worn open hides it.
+ *
+ * Both flaps start on the neckline arc itself — the first two commands are the source's own curve,
+ * copied and mirrored — then drop to a point below the throat. Drawn this way the collar cannot detach
+ * from the neck, however the head above it changes.
+ */
+const COLLAR_LEFT = 'M67 15.65c0 11.87 15 21.48 33.5 21.48l-5.5 15.9c-12-4-22-16-28-37.38z'
+const COLLAR_RIGHT = 'M134 15.65c0 11.87-15 21.48-33.5 21.48l5.5 15.9c12-4 22-16 28-37.38z'
+
+/**
+ * The collar band — the piece that turns two flat wedges into a collar.
+ *
+ * Set beside upstream's own `collarAndSweater` the first version read as paper: two triangles with no
+ * thickness, sitting on the neck rather than round it. A real collar has a band that wraps the throat
+ * and points that fall from it, and the band is what gives the whole thing depth. It is the neckline
+ * curve and the same curve dropped seven units, so it wraps the neck by construction.
+ *
+ * This is the highest-leverage drawing in the style: it appears in all fourteen garments.
+ */
+const COLLAR_BAND =
+  'M67 15.65C67 27.52 82 37.13 100.5 37.13 119 37.13 134 27.52 134 15.65' +
+  'L134 22.9C134 34.77 119 44.38 100.5 44.38 82 44.38 67 34.77 67 22.9z'
+
+// The two flaps are the same shape, so without asymmetric shading they fuse into one white blob under
+// the chin. The near-side flap is lifted and the far one dropped, which is the only thing that makes the
+// collar read as two pieces of cloth rather than a bib.
+const collar: Element[] = [
+  path(COLLAR_LEFT, SHIRT),
+  path(COLLAR_RIGHT, SHIRT),
+  shade(COLLAR_LEFT, 0.04),
+  shade(COLLAR_RIGHT, 0.16),
+  // The shadow the band casts on the shirt below it. Without this the band reads as printed on rather
+  // than as a separate piece of cloth standing away from the chest.
+  shade('M69 22C71 34 84 45 100.5 45 117 45 130 34 132 22l4 4C133 39 118 50 100.5 50 83 50 68 39 65 26z', 0.1),
+  path(COLLAR_BAND, SHIRT),
+  // One soft edge under the band's fold, in upstream's own idiom: black at low opacity, never a hue.
+  shade('M100.5 37.13C119 37.13 134 27.52 134 15.65v3.2C134 30.7 119 40.3 100.5 40.3z', 0.12),
+]
+
+/**
+ * Knot and blade, hung from the throat notch at (100.5, 37) where the two collar points meet.
+ *
+ * The knot carries a dimple and a lit left face. Without them the tie is one flat trapezoid running from
+ * the chin to the hem — a strip of card rather than folded cloth — which is exactly how it read beside
+ * upstream's tailoring.
+ */
+const tie: Element[] = [
+  path('M93 40h15l2 12-9.5 4-9.5-4z', ACCENT),
+  path('M91 52 100.5 56 110 52 114 95.31H87z', ACCENT),
+  // The blade's right face turned away from the light, and the shadow the knot casts on it.
+  shade('M100.5 56 110 52 114 95.31h-13.5z', 0.1),
+  shade('M91 52 100.5 56 110 52 110.8 60 100.5 64 90.2 60z', 0.14),
+  // The dimple: a small fold below the knot's top edge, which is the detail that says "tied".
+  shade('M97.6 41.5h5.8l-2.9 5z', 0.16),
+  path('M93 40h7.5v16l-9.5-4z', 'white', { 'fill-opacity': '.07' }),
+]
+
+/**
+ * A bow, hung from the same throat notch as the tie so the two are interchangeable.
+ *
+ * The wings are pinched rather than straight-sided — a plain triangle reads as a paper dart at this
+ * size. Same accent group as the tie, because only one element in the figure may carry colour.
+ */
+const bow: Element[] = [
+  path('M100.5 44 85 35.5q3 8.5 0 17z', ACCENT),
+  path('M100.5 44 116 35.5q-3 8.5 0 17z', ACCENT),
+  shade('M100.5 44 116 35.5q-3 8.5 0 17z', 0.12),
+  {
+    type: 'element',
+    name: 'rect',
+    attributes: { x: '96.5', y: '38.5', width: '8', height: '11', rx: '2.5', fill: ACCENT },
+  },
+  shade('M100.5 38.5h4a2.5 2.5 0 0 1 2.5 2.5v6a2.5 2.5 0 0 1-2.5 2.5h-4z', 0.14),
+  path('M96.5 41a2.5 2.5 0 0 1 2.5-2.5h1.5v11H99a2.5 2.5 0 0 1-2.5-2.5z', 'white', { 'fill-opacity': '.09' }),
+]
+
+/**
+ * A cravat — a folded neckcloth filling the collar's opening rather than hanging from it.
+ *
+ * Worth its own variant because it is a different *shape* at the throat, not a different colour: where
+ * the tie and the bow are narrow objects on a field of shirt, this fills the V completely. That reads
+ * differently at every size, including at 16px where the tie is one pixel wide and this is four.
+ */
+const cravat: Element[] = [
+  /*
+   * Bulged in the middle and tapered to a foot, because cloth gathered at the throat swells and then
+   * tucks away. Drawn first as a rounded rectangle with a pin at its centre it read, unmistakably, as a
+   * luggage tag — the straight sides and the dot together made it an object rather than a garment. The
+   * pin is gone and the silhouette does the work.
+   */
+  path('M94 40h13q4 10 4 16 0 8-10.5 12Q90 64 90 56q0-6 4-16z', ACCENT),
+  // Right half turned from the light; a gather line where it leaves the collar.
+  shade('M100.5 40h6.5q4 10 4 16 0 8-10.5 12z', 0.12),
+  path('M94 40h13q1.2 3 2 5.6-9 2.8-17 0Q92.8 43 94 40z', 'white', { 'fill-opacity': '.14' }),
+]
+
+/**
+ * The neckline, as its own path, in both directions.
+ *
+ * Anything that meets the throat is built from these rather than from a chord between their endpoints.
+ * A straight line from (67, 15.65) to (134, 15.65) looks like it lies along the top of the garment, but
+ * the neck scoop hangs 21 units below that chord — so a shape closed with it either paints over the neck
+ * or leaves a bright sliver of skin above the cloth. Both happened, on the waistcoat and on the gown,
+ * and at 96px neither was visible.
+ */
+const NECKLINE_LTR = 'C67 27.52 82 37.13 100.5 37.13 119 37.13 134 27.52 134 15.65'
+/** The left half only, from the shoulder down to the throat notch — the source's own curve, split at t=0.5. */
+const NECKLINE_HALF_REL = 'c0 5.94 3.75 11.31 9.81 15.19'
+/** Where that half ends: the point on the neckline directly below the shoulder-to-notch midpoint. */
+const NECK_L = { x: 76.81, y: 30.84 }
+const NECK_R = { x: 124.19, y: 30.84 }
+/** The neckline from x ≈ 85 through the notch to x ≈ 116 — the top edge of anything worn at the throat. */
+const THROAT_SPAN =
+  'M85.11 34.73C89.72 36.27 94.95 37.13 100.5 37.13 106.05 37.13 111.28 36.27 115.89 34.73'
+
+/**
+ * Waistcoat: the torso again, with a V punched out of it by the even-odd rule.
+ *
+ * Cutting the opening rather than drawing a panel around it is what guarantees the waistcoat's outline
+ * *is* the body's outline. The cut is bounded above by the neckline itself, not by a chord across it, so
+ * the opening begins exactly where the collar does and cannot expose skin at the shoulders.
+ */
+const WAISTCOAT_V = `M134 15.65 100.5 70 67 15.65${NECKLINE_LTR}z`
+const waistcoat: Element[] = [
+  path(`${TORSO}${WAISTCOAT_V}`, CLOTHES, { 'fill-rule': 'evenodd' }),
+  shade(`${TORSO}${WAISTCOAT_V}`, 0.16),
+]
+
+const jacket: Element[] = [
+  path(JACKET_FRONTS, CLOTHES),
+  shade(LAPEL_FOLD, 0.15),
+  path(POCKET_SQUARE, SHIRT),
+]
+
+/**
+ * Double-breasted: the same jacket with the left front carried across the chest.
+ *
+ * The crossover is laid down *before* the fronts so the right lapel overlaps it, which is the direction
+ * a real double-breasted coat wraps. Two numbers make it work and both are read off the source's own
+ * lapel, not chosen: the blazer's inner edges run from x = 68.76 at y = 14.5 to x = 74 and x = 126 at the
+ * hem, so the crossover has to span 66 to 134 to pass *under* both of them. Drawn 74 to 126 — flush with
+ * the lapels at the hem, which looks right on paper — it fell short by three units at chest height and
+ * rendered as a detached slab floating on the shirt with two free corners.
+ *
+ * Its own top edge is therefore never visible: what the viewer sees is the diagonal where the crossover
+ * disappears behind each lapel.
+ */
+const doubleBreasted: Element[] = [
+  // The wrap crosses at y = 64 on the left. Drawn any higher it buries the tie knot, which is where a
+  // double-breasted coat's whole read lives.
+  path('M66 95.31V64l68-20v51.31z', CLOTHES),
+  shade('M66 64 134 44v6L66 70z', 0.1),
+  ...jacket,
+  // Both columns sit below the wrap line, which at x = 110 is y = 51 and at x = 121 is y = 48.
+  path('M110 60a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4m0 16a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4', 'black', {
+    'fill-opacity': '.4',
+  }),
+  path('M121 56a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4m0 16a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4', 'black', {
+    'fill-opacity': '.4',
+  }),
+]
+
+/**
+ * Court gown: the blazer's shoulder arcs kept exactly, its lapels replaced by two plain fronts that
+ * swing outward toward the hem. A gown has no notch and no revers, so removing them is the whole edit;
+ * the silk facings are the strip between the new front edge and the line it would have taken.
+ *
+ * Each front is closed along the source's *own* shoulder arc and then along half of the source's own
+ * neckline, so its top boundary is the torso's top boundary and nothing can show between them. Closed
+ * with a straight line from the shoulder to the collar instead — which is how this was drawn first — the
+ * gown rides above the neck scoop and a bright one-unit seam of skin runs along both shoulders.
+ */
+const GOWN_LEFT =
+  `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31H0v-8.95A72 72 0 0 1 67.05 14.53` +
+  `l-.05 1.12${NECKLINE_HALF_REL}z`
+const GOWN_RIGHT =
+  `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h60v-8.95A72 72 0 0 0 133.96 14.6` +
+  'l.04 1.05c0 5.94-3.75 11.31-9.81 15.19z'
+/*
+ * The facings run INSIDE the front edge — `h-11`, not `h11`.
+ *
+ * They were drawn on the outside for three rounds, which put them on the shirt rather than on the gown.
+ * At 10% white over pale linen that is almost invisible, so nothing in any screenshot ever looked wrong;
+ * it was found by checking the gown's fill region against the band's coordinates rather than by looking.
+ * Giving them a solid colour of their own is what makes the error impossible to hide again.
+ */
+const FACING_LEFT = `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-15C47 72 55 50 64 31z`
+const FACING_RIGHT = `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h15C154 72 146 50 137 31z`
+/** The lit inner half of each facing. Silk is defined by its sheen, so a flat band is just a stripe. */
+const FACING_SHEEN_L = `M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-6C53 73 60 51 69 32z`
+const FACING_SHEEN_R = `M${NECK_R.x} ${NECK_R.y}C130 50 138 74 140 95.31h6C148 73 141 51 132 32z`
+const gown: Element[] = [
+  path(GOWN_LEFT, ROBE),
+  path(GOWN_RIGHT, ROBE),
+  // Silk facings against wool. They carry their own colour group rather than a white overlay, so a
+  // consumer can set them independently of the gown body — and so they cannot silently vanish again.
+  path(FACING_LEFT, FACING),
+  path(FACING_RIGHT, FACING),
+  path(FACING_SHEEN_L, 'white', { 'fill-opacity': '.12' }),
+  path(FACING_SHEEN_R, 'white', { 'fill-opacity': '.07' }),
+  shade(FACING_RIGHT, 0.12),
+  shade(`M${NECK_L.x} ${NECK_L.y}C70 50 62 74 60 95.31h-6C56 72 64 48 72 29z`, 0.25),
+]
+
+/*
+ * An academic stole was drawn here and cut. Geometrically it was fine — a band at the gown's front edge,
+ * correctly inside it — but at the scale the torso actually occupies, a saturated band beside the collar
+ * reads as a coloured lapel rather than as academic dress, and it collided with `gownAndHood`, which
+ * already spends the style's one accent colour on the shoulders. Five court variants of which one is
+ * weak is worse than four that are not, so the wardrobe keeps its depth in tailoring instead.
+ */
+
+/**
+ * Bands, on a dark stock.
+ *
+ * The stock is not decoration — it is the fix for the first draft, where two white tabs drawn on a white
+ * collar were geometrically perfect and completely invisible. Linen bands are worn over a dark clerical
+ * stock in life, so the thing that makes them legible is also the thing that makes them correct.
+ */
+const bands: Element[] = [
+  // The stock has to run the full length of the tabs — stopped short at y = 49 it left the lower two
+  // thirds of each band white-on-white and the pair read as one small glyph — and its top edge has to be
+  // the neckline, or its square corners show as two steps against the collar behind it.
+  path(`${THROAT_SPAN}L112.4 74.5H88.6z`, ROBE),
+  // Widened from 7.6 to 9. Beside upstream's garments the first pair read as two hairlines rather than
+  // as linen; bands are a substantial thing at the throat and have to occupy real width to say so.
+  path('M90.6 38.5h9l-2.2 31.5a3.3 3.3 0 0 1-6.6-.3z', SHIRT),
+  path('M101.4 38.5h9l2.3 31.2a3.3 3.3 0 0 1-6.6.3z', SHIRT),
+  // Lit at the top where they leave the stock, shaded down the inner edge where they fall away.
+  path('M90.6 38.5h9l-.15 2.4h-9z', 'white', { 'fill-opacity': '.55' }),
+  path('M101.4 38.5h9l.17 2.4h-9z', 'white', { 'fill-opacity': '.55' }),
+  shade('M97.4 38.5h2.2l-2.2 31.5a3.3 3.3 0 0 1-2.4 1.1z', 0.1),
+  shade('M110.4 38.5h-2.2l2.3 31.2a3.3 3.3 0 0 0 2.4 1.1z', 0.16),
+]
+
+/**
+ * Three falls of lace — the same construction at three scales, which is what a jabot is.
+ *
+ * Same lesson as the bands: the tiers sit on a dark ground and are inset two units from it, so each fall
+ * is outlined by the ground rather than by a shade line that white-on-white swallows.
+ */
+const jabot: Element[] = [
+  /*
+   * Rebuilt after seeing it beside upstream's tailoring, where it read as a small stack of white keys.
+   *
+   * Three changes. The falls now WIDEN as they descend, the way cloth gathered at the throat actually
+   * hangs — three equal-width tiers are a stack of blocks, not a jabot. Each tier is lit on its upper
+   * face and shaded where the tier below tucks under it, so the stack has depth instead of being an
+   * outline drawing. And the ground now follows the lace rather than boxing it.
+   */
+  path(`${THROAT_SPAN}L115 60.5q-7.5 6-14.5 0-7 6-14.5 0z`, ROBE),
+  path('M90 37h21v4q-5.25 5-10.5 0-5.25 5-10.5 0z', SHIRT),
+  shade('M90 41q5.25 5 10.5 0 5.25 5 10.5 0v1.6q-5.25 5-10.5 0-5.25 5-10.5 0z', 0.09),
+  path('M87.5 44h26v4.5q-6.5 5.5-13 0-6.5 5.5-13 0z', SHIRT),
+  shade('M87.5 48.5q6.5 5.5 13 0 6.5 5.5 13 0v1.7q-6.5 5.5-13 0-6.5 5.5-13 0z', 0.09),
+  path('M85 53.5h31v5q-7.75 6-15.5 0-7.75 6-15.5 0z', SHIRT),
+  // The lit upper face of each fall, which is what makes them read as separate pieces of cloth.
+  path('M90 37h21v1.8H90zm-2.5 7h26v1.8h-26zm-2.5 9.5h31v1.8H85z', 'white', { 'fill-opacity': '.5' }),
+]
+
+/**
+ * Academic hood, as two bands over the shoulders.
+ *
+ * From the front that is all a hood is — the body of it hangs behind. Drawing only what would be
+ * visible keeps it from becoming a cape, which is what an earlier crescent across the whole chest read
+ * as. Both bands are solved to stay inside the shoulder arcs at every height they cross.
+ */
+const hood: Element[] = [
+  path('M64 20C60 42 52 58 38 70L20 56C36 46 46 34 50 20z', ACCENT),
+  path('M136 20c4 22 12 38 26 50l18-14c-16-10-26-22-30-36z', ACCENT),
+  path('M64 20C60 42 52 58 38 70l-6-4.6C45 53 52 38 56 20z', 'white', { 'fill-opacity': '.22' }),
+  path('M136 20c4 22 12 38 26 50l6-4.6C155 53 148 38 144 20z', 'white', { 'fill-opacity': '.22' }),
+]
+
+const shirtBody: Element[] = [path(TORSO, SHIRT), shade(NECK_SHADOW, 0.1)]
+
+/** Layer order is fixed everywhere: body, waistcoat, collar, neckwear, outer garment. */
+function garment(...layers: Element[][]): { elements: Element[] } {
+  return { elements: [...shirtBody, ...layers.flat()] }
+}
+
+export const CLOTHES_VARIANTS: Record<string, { elements: Element[]; weight: number }> = {
+  shirtAndTie: { ...garment(collar, tie), weight: 9 },
+  shirtAndBowTie: { ...garment(collar, bow), weight: 3 },
+  suit: { ...garment(collar, tie, jacket), weight: 12 },
+  suitAndWaistcoat: { ...garment(waistcoat, collar, tie, jacket), weight: 7 },
+  suitAndBowTie: { ...garment(collar, bow, jacket), weight: 5 },
+  suitAndCravat: { ...garment(collar, cravat, jacket), weight: 4 },
+  // The waistcoat worn without a jacket. Worth its own variant because it changes the silhouette rather
+  // than the detail: no lapels, so the torso is one dark mass with a shirt V — which is a different
+  // figure at 16px, where lapels have long since disappeared.
+  waistcoatAndTie: { ...garment(waistcoat, collar, tie), weight: 5 },
+  waistcoatAndBowTie: { ...garment(waistcoat, collar, bow), weight: 3 },
+  doubleBreastedSuit: { ...garment(collar, tie, doubleBreasted), weight: 5 },
+  // Upstream's blazer, worn open — kept because it is the one garment that shipped with the style and
+  // still belongs in the room.
+  blazer: { elements: [...shirtBody, ...collar, ...jacket], weight: 4 },
+  gown: { ...garment(collar, gown), weight: 3 },
+  gownAndBands: { ...garment(collar, bands, gown), weight: 4 },
+  gownAndJabot: { ...garment(collar, jabot, gown), weight: 2 },
+  gownAndHood: { ...garment(collar, bands, gown, hood), weight: 3 },
+}
+
+// ---------------------------------------------------------------------------------------------------
+// top — 260 × 280, placed at translate(8 0). Skull: a 56-unit circle centred at (132, 92).
+// ---------------------------------------------------------------------------------------------------
+
+/**
+ * Biretta.
+ *
+ * Everything here is struck from the skull the source actually drew: a 56-unit circle centred at
+ * (132, 92). The crown's base is at y = 66, where that circle is 106 wide, and the crown is 108 wide
+ * there — so the cap is wider than the head at every height it crosses and no rim of scalp can appear
+ * beside it. The base curves *downward* rather than running straight, because a straight edge laid
+ * across a dome touches it only at the middle and reads as a plank balanced on a head.
+ *
+ * The hard part is register of *idiom*, not of geometry. A biretta is an angular object and this style
+ * contains no angular objects — the source's nearest neighbour, the turban, is one soft mass with a
+ * single highlight. A board 116 units wide with a knob on it read as a lampshade sitting on a person.
+ * What fixed it was shrinking the board to 100 (below the head's own 112), rounding its ends to a full
+ * pill, and pulling it down onto the crown so the cap is one silhouette rather than a stack of three.
+ *
+ * Side hair is part of the variant rather than a separate layer: `top` is exclusive in this style, so a
+ * cap with no hair under it renders a shaved head and reads as costume rather than as dress.
+ */
+const biretta: Element[] = [
+  /*
+   * The hair is a crescent between two arcs concentric with the skull — r = 58 outside it and r = 44
+   * inside — so it cannot detach from the head however the cap above it changes. Drawn freehand it came
+   * out as a thin dark spike floating clear of the temple, which was the worst defect in the style.
+   * Its top edge is a flat chord at y = 56, one unit inside the crown's edge at that height, and its
+   * foot is rounded rather than cut off square — a radial chop across the cheek reads as a shaved
+   * sideburn, which is a haircut nobody on this bench has.
+   */
+  path('M86.5 56A58 58 0 0 0 80.6 112Q84 118 90.4 106A44 44 0 0 1 106.7 56z', HAIR),
+  path('M177.5 56A58 58 0 0 1 183.4 112Q180 118 173.6 106A44 44 0 0 0 157.3 56z', HAIR),
+  /*
+   * The crown's sides bow outward instead of running dead straight, and its top corners are rounded.
+   *
+   * Beside upstream's turban the straight-sided version read as machined — a lampshade rather than a
+   * cap. Nothing upstream has a straight edge of this length or a corner this sharp; every form it
+   * draws is bowed. A biretta is an angular object and this style contains no angular objects, so the
+   * register is bought by softening every edge that can be softened without losing what it is.
+   */
+  path('M105 34h54a5 5 0 0 1 4 2C170 46 178 56 186 66Q132 81 78 66C86 56 94 46 101 36a5 5 0 0 1 4-2z', HAT),
+  {
+    type: 'element',
+    name: 'rect',
+    attributes: { x: '82', y: '22', width: '100', height: '13', rx: '6.5', fill: HAT },
+  },
+  { type: 'element', name: 'circle', attributes: { cx: '132', cy: '17', r: '6.5', fill: HAT } },
+  // Lit on the left, shaded under the brim and down the right — one light direction, as upstream uses.
+  // The lit face stops short of the centre line. Carried all the way to x = 132 it drew a hard vertical
+  // seam down the cap and split it into two halves.
+  path('M105 34h12c-3 12-7 22-12 30Q90 64.5 78 66C86 56 94 46 101 36a5 5 0 0 1 4-2z', 'white', {
+    'fill-opacity': '.09',
+  }),
+  shade('M78 66Q132 81 186 66l-3-6Q132 73 81 60z', 0.14),
+  // Follows the board's own rounded end. Drawn to x = 182 with its own 6.5 arc it overshot the pill by
+  // a full radius and hung a grey tab off the right of the brim.
+  shade('M132 22h43.5a6.5 6.5 0 0 1 0 13H132z', 0.1),
+]
+
+/**
+ * Barrister's wig.
+ *
+ * One closed path: crown, both side falls, and the hairline cut out of the middle. Because the falls are
+ * part of the wig's own outline rather than shapes laid beside it, they cannot drift off the head — the
+ * failure mode of drawing three loose curls and hoping.
+ *
+ * Proportion, not shape, is what makes this read as a wig rather than as a hood, and all four numbers
+ * are set against the skull the source drew (a 56-unit circle at (132, 92), brow line at y ≈ 94):
+ *
+ *   Outer edge   ±68   twelve units proud of the head. At ±78 the head looked shrunken inside it.
+ *   Face opening ±46   THE number that matters. At ±34 the wig covered twenty-two units of head on each
+ *                      side, swallowing both temples and most of the cheeks, and the face read as a
+ *                      small oval set into a large grey egg. At ±46 it laps the temple by ten units and
+ *                      the head still looks like a head.
+ *   Front edge   y=68  twenty-six units above the brow. At y = 54 a bald dome showed above the face.
+ *   Fall foot    y=145 level with the jaw, so the falls end beside the face rather than past it.
+ *
+ * The path is written with an explicit space at every line wrap. Concatenating "…8-47" with "0-27…"
+ * silently produces the number 470 and collapses the whole wig to a hairline, which is what the first
+ * draft did and what no amount of reading the code revealed.
+ *
+ * It carries its own two-value palette. A wig is never ginger, and letting it take `hair` would have
+ * produced exactly that.
+ */
+const WIG_BODY =
+  'M132 26c-38 0-68 26-68 64v44a11 11 0 0 0 22 0C86 112 94 68 132 68 170 68 178 112 178 134' +
+  'a11 11 0 0 0 22 0V90c0-38-30-64-68-64z'
+
+/**
+ * A curl, drawn as a bump on the silhouette rather than as a mark inside it.
+ *
+ * This is where the wig's identity lives. At 16px the interior is gone and only the outline survives, so
+ * a lobed edge is worth more than any amount of internal shading — and at 300px it is what separates a
+ * wig from a hood.
+ *
+ * The radius is a parameter because eight identical circles evenly spaced read as machine-made. Real
+ * curls grow toward the foot of the fall, so these do too.
+ */
+function curlBump(cx: number, cy: number, r: number): Element {
+  return { type: 'element', name: 'circle', attributes: { cx: String(cx), cy: String(cy), r: String(r), fill: WIG } }
+}
+
+const wig: Element[] = [
+  path(WIG_BODY, WIG),
+  curlBump(65, 98, 7),
+  curlBump(64, 113, 8.5),
+  curlBump(64, 129, 9.5),
+  curlBump(67, 144, 10),
+  curlBump(199, 98, 7),
+  curlBump(200, 113, 8.5),
+  curlBump(200, 129, 9.5),
+  curlBump(197, 144, 10),
+  /*
+   * One swept highlight over the crown, and one soft shadow where each fall turns away.
+   *
+   * Set beside upstream's `turban` the flat version was plainly the less resolved drawing: the turban
+   * carries a single tapered highlight stroke and reads as a solid object, while this read as a cut-out.
+   * The earlier attempt at interior detail failed because it was *rhythmic* — three repeated bars per
+   * fall, which nothing upstream does. One asymmetric sweep is the idiom, and it is what was missing.
+   *
+   * It must also be asymmetric. A symmetric arc across the whole crown, tried first, read as a headband
+   * rather than as light; and a paired shadow down the right fall was drawn outside the fall's inner
+   * edge and printed a grey patch on the cheek. Both were caught by rendering this beside the turban.
+   */
+  path('M82 74c6-18 22-32 44-38-18 10-32 24-38 42z', 'white', { 'fill-opacity': '.34' }),
+]
+
+export const TOP_ADDITIONS: Record<string, { elements: Element[]; weight: number }> = {
+  wig: { elements: wig, weight: 3 },
+  biretta: { elements: biretta, weight: 2 },
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Face — the hard part. See the recipe's note on register.
+// ---------------------------------------------------------------------------------------------------
+
+/**
+ * Mouths. The source ships twelve, eleven of which are performing an emotion; `serious` is the only one
+ * that is not, and one mouth across a whole style makes every avatar the same person.
+ *
+ * These two are `serious` re-proportioned rather than newly invented: the same rounded bar at the same
+ * y, taken wider and thinner for a composed line, and shorter and deeper for a closed one. Both keep the
+ * source's black-at-.7, which is what stops them reading as a different hand.
+ */
+function levelMouth(x: number, y: number, w: number, h: number): Element {
+  return {
+    type: 'element',
+    name: 'rect',
+    attributes: {
+      x: String(x),
+      y: String(y),
+      width: String(w),
+      height: String(h),
+      rx: String(h / 2),
+      fill: 'black',
+      'fill-opacity': '.7',
+    },
+  }
+}
+
+/**
+ * Mouths. Upstream ships twelve and eleven are performing an emotion; `serious` — a rounded bar — is the
+ * only one that is not, and one mouth across a whole style makes every avatar the same person.
+ *
+ * These two are that bar re-proportioned. An earlier `set` was drawn as a lens with curved edges and
+ * measured a 2.69-unit downturn at the corners, which reads as displeased and is as wrong as a smile.
+ * Both are now rounded rectangles, so top and bottom edges are horizontal and the cant is zero by
+ * construction. They differ only in width and weight.
+ */
+export const MOUTH_ADDITIONS: Record<string, { elements: Element[]; weight: number }> = {
+  set: { elements: [levelMouth(31, 12.5, 30, 5)], weight: 4 },
+  pressed: { elements: [levelMouth(37, 11, 18, 7)], weight: 3 },
+}
+
+/**
+ * The two drawn brows, which sit either side of the one upstream brow that survives.
+ *
+ * Measured, not eyeballed — and the measurement had to be got right before it meant anything. Reading
+ * the TOP edge of a rounded bar reports the cap radius as if it were an arch: a level 24x6 rect with
+ * rx=3 scores 2.5 that way, and on that faulty metric upstream's `flatNatural` appeared to rise 4.75
+ * and an earlier hand-drawn brow here appeared to rise 3.94. Reading the MIDLINE instead, at 15%, 50%
+ * and 85% of the span, `flatNatural` measures -0.19 — level — while `angry` tilts 3.63,
+ * `raisedExcited` 3.81, `sadConcerned` -3.44 and even `default` 2.16.
+ *
+ * So `flatNatural` was reinstated: it passes the test, and it is upstream's own hand. These two flank
+ * it in weight. Both have a dead-straight top edge, so tilt is zero by construction rather than by care;
+ * life comes from the bottom edge, which tapers thick-to-thin from the inner end outward — how a brow
+ * actually sits, and a property that carries no emotion.
+ */
+function brow(x0: number, x1: number, top: number, inner: number, outer: number): Element {
+  const r = inner / 2
+  const ro = outer / 2
+  const mirror = (v: number) => 96.27 - v
+  return path(
+    `M${x0} ${top} ${x1} ${top}a${r} ${r} 0 0 1 0 ${inner}L${x0} ${top + outer}a${ro} ${ro} 0 0 1 0-${outer}z` +
+      `M${mirror(x0)} ${top} ${mirror(x1)} ${top}a${r} ${r} 0 0 0 0 ${inner}L${mirror(x0)} ${top + outer}` +
+      `a${ro} ${ro} 0 0 0 0-${outer}z`,
+    'black',
+    { 'fill-opacity': '.6' },
+  )
+}
+
+export const EYEBROW_ADDITIONS: Record<string, { elements: Element[]; weight: number }> = {
+  level: { elements: [brow(4, 31, 10.4, 6, 2.8)], weight: 5 },
+  levelFine: { elements: [brow(5.5, 30, 11, 4.4, 2)], weight: 3 },
+}
+
+/*
+ * A hooded eye was drawn here and cut, and the reason is worth keeping.
+ *
+ * It was upstream's own `happy` arc translated seven units up, on the theory that relocating a smile
+ * makes it an upper lid. Measured on its own that arc tilts 2.25 units — the same arch as upstream's
+ * `default` brow, which this style rejects at 2.16. Moving a curve does not flatten it. On a wall of
+ * faces it read as a second, arched brow sitting inside the eye, and it failed the style's own test.
+ *
+ * Note that measuring the composite shape hid this: pupil-plus-lid scores -0.5, because the pupil
+ * dominates the midline. The arc had to be measured alone. A metric that averages a defect away is
+ * worse than no metric, because it produces a number that looks like evidence.
+ *
+ * Cutting it left `eyes` with a single variant, so the component was removed and upstream's pupils are
+ * drawn straight onto the canvas instead.
+ */
