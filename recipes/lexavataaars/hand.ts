@@ -52,6 +52,27 @@ const TORSO =
   'M100.5 37.13c18.5 0 33.5-9.61 33.5-21.48q0-.52-.04-1.05A72 72 0 0 1 200 86.36v8.95H0v-8.95' +
   'a72 72 0 0 1 67.05-71.83q-.05.55-.05 1.12c0 11.87 15 21.48 33.5 21.48'
 
+/**
+ * The same torso with its shoulder arcs pulled in a unit and a half, for use UNDER an outer garment.
+ *
+ * Every outer garment here is built on the source's own r = 72 shoulder arcs, and so is the shirt — so
+ * the shirt's outline and the coat's outline were the same curve, one drawn straight on top of the
+ * other. Two coincident edges do not cancel: each antialiases against what is behind IT, so the boundary
+ * pixel came out part shirt, part coat and part background, and because the shirt is far the lightest of
+ * the three the result was a pale rim tracing both shoulders. On a dark background at 96px — which is a
+ * size this actually ships at — it read as a halo around every suited figure.
+ *
+ * Insetting the layer underneath is the safe direction to fix it in: nothing here is a silhouette, so
+ * nothing visible moves, and 1.5 units is far inside the narrowest point of any coat that covers it.
+ * Growing the coats instead would have made the gown a unit wider than the blazer at the same seed.
+ *
+ * The neckline is deliberately NOT inset — it is shared with the collar and with every garment that
+ * meets the throat, and moving it is what detaches a collar from a neck.
+ */
+const TORSO_UNDER =
+  'M100.5 37.13c18.5 0 33.5-9.61 33.5-21.48L133.84 16.09A70.5 70.5 0 0 1 198.5 86.36V95.31H1.5V86.36' +
+  'A70.5 70.5 0 0 1 67.15 16.02L67 15.65c0 11.87 15 21.48 33.5 21.48'
+
 /** The source's neck shadow, which is what keeps the head from looking pasted onto the shoulders. */
 const NECK_SHADOW =
   'M100.5 44.07c21.89 0 39.63-12.05 39.63-26.92q0-.9-.08-1.79-3-.51-6.1-.76.06.52.05 1.05' +
@@ -403,33 +424,82 @@ const hood: Element[] = [
   path('M134 17c4 24 13 42 28 55l6-4.6C153 58 145 40 141 19z', 'white', { 'fill-opacity': '.22' }),
 ]
 
-const shirtBody: Element[] = [path(TORSO, SHIRT), shade(NECK_SHADOW, 0.1)]
+const shirtBody = (torso: string): Element[] => [path(torso, SHIRT), shade(NECK_SHADOW, 0.1)]
 
-/** Layer order is fixed everywhere: body, waistcoat, collar, neckwear, outer garment. */
+/**
+ * Layer order is fixed everywhere: body, waistcoat, collar, neckwear, outer garment.
+ *
+ * `garment` is for the two variants where the shirt IS the silhouette; `coated` is for the twelve where
+ * something is worn over it and its outline is therefore never seen. The only difference is which torso
+ * goes underneath — see `TORSO_UNDER`.
+ */
 function garment(...layers: Element[][]): { elements: Element[] } {
-  return { elements: [...shirtBody, ...layers.flat()] }
+  return { elements: [...shirtBody(TORSO), ...layers.flat()] }
+}
+
+function coated(...layers: Element[][]): { elements: Element[] } {
+  return { elements: [...shirtBody(TORSO_UNDER), ...layers.flat()] }
 }
 
 export const CLOTHES_VARIANTS: Record<string, { elements: Element[]; weight: number }> = {
   shirtAndTie: { ...garment(collar, tie), weight: 9 },
   shirtAndBowTie: { ...garment(collar, bow), weight: 3 },
-  suit: { ...garment(collar, tie, jacket), weight: 12 },
-  suitAndWaistcoat: { ...garment(waistcoat, collar, tie, jacket), weight: 7 },
-  suitAndBowTie: { ...garment(collar, bow, jacket), weight: 5 },
-  suitAndCravat: { ...garment(collar, cravat, jacket), weight: 4 },
+  suit: { ...coated(collar, tie, jacket), weight: 12 },
+  suitAndWaistcoat: { ...coated(waistcoat, collar, tie, jacket), weight: 7 },
+  suitAndBowTie: { ...coated(collar, bow, jacket), weight: 5 },
+  suitAndCravat: { ...coated(collar, cravat, jacket), weight: 4 },
   // The waistcoat worn without a jacket. Worth its own variant because it changes the silhouette rather
   // than the detail: no lapels, so the torso is one dark mass with a shirt V — which is a different
   // figure at 16px, where lapels have long since disappeared.
-  waistcoatAndTie: { ...garment(waistcoat, collar, tie), weight: 5 },
-  waistcoatAndBowTie: { ...garment(waistcoat, collar, bow), weight: 3 },
-  doubleBreastedSuit: { ...garment(collar, tie, doubleBreasted), weight: 5 },
+  waistcoatAndTie: { ...coated(waistcoat, collar, tie), weight: 5 },
+  waistcoatAndBowTie: { ...coated(waistcoat, collar, bow), weight: 3 },
+  doubleBreastedSuit: { ...coated(collar, tie, doubleBreasted), weight: 5 },
   // Upstream's blazer, worn open — kept because it is the one garment that shipped with the style and
   // still belongs in the room.
-  blazer: { elements: [...shirtBody, ...collar, ...jacket], weight: 4 },
-  gown: { ...garment(collar, gown), weight: 3 },
-  gownAndBands: { ...garment(collar, bands, gown), weight: 4 },
-  gownAndJabot: { ...garment(collar, jabot, gown), weight: 2 },
-  gownAndHood: { ...garment(collar, bands, gown, hood), weight: 3 },
+  blazer: { ...coated(collar, jacket), weight: 4 },
+  gown: { ...coated(collar, gown), weight: 3 },
+  gownAndBands: { ...coated(collar, bands, gown), weight: 4 },
+  gownAndJabot: { ...coated(collar, jabot, gown), weight: 2 },
+  gownAndHood: { ...coated(collar, bands, gown, hood), weight: 3 },
+}
+
+/**
+ * The same inset, applied to the skin body upstream draws under the clothes.
+ *
+ * `TORSO_UNDER` only solved half the problem. Under the shirt there is a second shape with the same
+ * outline again: the source's own head element carries a torso in `skin`, and its shoulder arcs are
+ * r = 72 about (112, 271) and (168, 271) — which, once the clothes' `translate(40 184.7)` is applied,
+ * are the clothes' own shoulder centres to within six hundredths of a unit. Three coincident edges, not
+ * two.
+ *
+ * It is the skin one that actually showed. Probed at 200px on black, the boundary pixel of the gown's
+ * left shoulder came back (78, 48, 27) — orange, between a black ground and a robe of (34, 32, 29),
+ * which no blend of those two can produce. A tan rim around a black gown is a worse artifact than a pale
+ * one, and it was there in every garment.
+ *
+ * The replacement is asserted rather than assumed: `source.g.ts` is generated, and if a regeneration
+ * ever changes this path the build should stop rather than quietly ship the halo back.
+ */
+const SKIN_BODY_SHOULDERS = 'V199h-4a72 72 0 0 0-72 72v9h200v-9a72 72 0 0 0-72-72h-4'
+const SKIN_BODY_SHOULDERS_INSET =
+  'V199h-4V200.5a70.5 70.5 0 0 0-70.5 70.5v9h197v-9a70.5 70.5 0 0 0-70.5-70.5V199h-4'
+
+export function insetSkinBody(elements: Element[]): Element[] {
+  let replaced = 0
+  const out = elements.map((element) => {
+    if (!('attributes' in element)) return element
+    const d = element.attributes?.d
+    if (typeof d !== 'string' || !d.includes(SKIN_BODY_SHOULDERS)) return element
+    replaced++
+    return {
+      ...element,
+      attributes: { ...element.attributes, d: d.replace(SKIN_BODY_SHOULDERS, SKIN_BODY_SHOULDERS_INSET) },
+    }
+  })
+  if (replaced !== 1) {
+    throw new Error(`insetSkinBody: expected exactly one skin body to inset, found ${replaced}`)
+  }
+  return out
 }
 
 // ---------------------------------------------------------------------------------------------------

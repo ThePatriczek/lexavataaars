@@ -88,6 +88,35 @@ describe('createAvatar', () => {
     }
   })
 
+  /*
+   * Three shapes in this style used to share one outline: the source's skin torso, the shirt drawn over
+   * it, and whichever coat was drawn over that — all built on the same r = 72 shoulder arcs. Coincident
+   * edges do not cancel, they antialias independently, and the result was a tan rim tracing the shoulders
+   * of all fourteen garments on any dark ground.
+   *
+   * The two lower layers are inset to r = 70.5 so only the coat's own edge is ever the boundary. Asserted
+   * on the built definition rather than on the recipe, because the recipe is what a regeneration of
+   * `source.g.ts` would silently bypass.
+   */
+  test('keeps the layers under a coat inside its outline, so no shoulder rim can form', () => {
+    const json = JSON.stringify(styleDefinition)
+
+    expect(json).not.toContain('a72 72 0 0 0-72 72v9h200v-9a72 72 0 0 0-72-72')
+    expect(json).toContain('a70.5 70.5 0 0 0-70.5 70.5v9h197v-9a70.5 70.5 0 0 0-70.5-70.5')
+
+    const coated = (styleDefinition as unknown as {
+      components: { clothes: { variants: Record<string, { elements: { attributes?: { d?: string } }[] }> } }
+    }).components.clothes.variants
+
+    for (const name of ['suit', 'gown', 'blazer', 'waistcoatAndTie']) {
+      expect(coated[name]!.elements[0]!.attributes!.d).toContain('A70.5 70.5')
+    }
+    // ...and the two variants where the shirt IS the silhouette keep the source's own arcs.
+    for (const name of ['shirtAndTie', 'shirtAndBowTie']) {
+      expect(coated[name]!.elements[0]!.attributes!.d).toContain('A72 72')
+    }
+  })
+
   test('honours a pinned variant, which is how consumers build presets', () => {
     const svg = createAvatar({ seed: 'anything', idRandomization: false, clothesVariant: 'gown' }).toString()
 

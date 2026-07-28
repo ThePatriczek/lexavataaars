@@ -55,6 +55,7 @@ import type { Element, Recipe } from '@lexavataaars/forge'
 import {
   CLOTHES_VARIANTS,
   EYEBROW_ADDITIONS,
+  insetSkinBody,
   MOUTH_ADDITIONS,
   TOP_ADDITIONS,
 } from './lexavataaars/hand.ts'
@@ -368,7 +369,9 @@ export const lexavataaars: Recipe = {
    * `clothesGraphic` is gone with `graphicShirt`, so the reference to it is gone too.
    */
   canvasElements: () => [
-    ...HEAD_ELEMENTS,
+    // Insetting the shoulders of the source's own skin torso, which shared its outline exactly with
+    // every garment drawn over it and printed a tan rim around all fourteen. See `insetSkinBody`.
+    ...insetSkinBody(HEAD_ELEMENTS),
     /*
      * The eyes are drawn onto the canvas rather than published as a component.
      *
