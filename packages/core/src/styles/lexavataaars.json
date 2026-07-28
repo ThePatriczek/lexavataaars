@@ -1279,7 +1279,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M94 40h13q4 10 4 16 0 8-10.5 12Q90 64 90 56q0-6 4-16z",
+                "d": "M94 40h13q4 10 4 16 0 6.5-7 10.5a6 6 0 0 1-7 0Q90 62.5 90 56q0-6 4-16z",
                 "fill": {
                   "type": "color",
                   "name": "accent"
@@ -1290,7 +1290,7 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M100.5 40h6.5q4 10 4 16 0 8-10.5 12z",
+                "d": "M103 40h4q4 10 4 16 0 6.5-7 10.5a6 6 0 0 1-3.5.9z",
                 "fill": "black",
                 "fill-opacity": "0.12"
               }
@@ -1299,9 +1299,9 @@
               "type": "element",
               "name": "path",
               "attributes": {
-                "d": "M94 40h13q1.2 3 2 5.6-9 2.8-17 0Q92.8 43 94 40z",
+                "d": "M94 40h9q-1.5 4-2 7-6 1.6-10.5-.2Q92.8 43 94 40z",
                 "fill": "white",
-                "fill-opacity": ".14"
+                "fill-opacity": ".16"
               }
             },
             {

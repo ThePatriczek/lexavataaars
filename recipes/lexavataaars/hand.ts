@@ -188,10 +188,21 @@ const cravat: Element[] = [
    * luggage tag — the straight sides and the dot together made it an object rather than a garment. The
    * pin is gone and the silhouette does the work.
    */
-  path('M94 40h13q4 10 4 16 0 8-10.5 12Q90 64 90 56q0-6 4-16z', ACCENT),
-  // Right half turned from the light; a gather line where it leaves the collar.
-  shade('M100.5 40h6.5q4 10 4 16 0 8-10.5 12z', 0.12),
-  path('M94 40h13q1.2 3 2 5.6-9 2.8-17 0Q92.8 43 94 40z', 'white', { 'fill-opacity': '.14' }),
+  path('M94 40h13q4 10 4 16 0 6.5-7 10.5a6 6 0 0 1-7 0Q90 62.5 90 56q0-6 4-16z', ACCENT),
+  /*
+   * The shadow's edge runs from x = 103, not from the centre line, and the highlight is a crescent
+   * rather than a band across the full width.
+   *
+   * Both were symmetrical about x = 100.5, which is also the shape's own axis — so the light/dark
+   * terminator lay exactly along the fold the silhouette already implies, and at 6× the cravat read as
+   * two flat halves butted together with a seam down the middle. A light edge that coincides with an
+   * axis of symmetry always reads as a join. Offsetting it by two and a half units is enough for the
+   * shading to describe a rounded surface instead.
+   *
+   * The foot is rounded for the same reason the hood's is: cloth tucking away does not end in a point.
+   */
+  shade('M103 40h4q4 10 4 16 0 6.5-7 10.5a6 6 0 0 1-3.5.9z', 0.12),
+  path('M94 40h9q-1.5 4-2 7-6 1.6-10.5-.2Q92.8 43 94 40z', 'white', { 'fill-opacity': '.16' }),
 ]
 
 /**
