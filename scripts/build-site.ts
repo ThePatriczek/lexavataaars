@@ -36,11 +36,34 @@ type Options = Parameters<typeof createAvatar>[0]
  * or crawler sees; the provenance this page owes is stated in prose at the bottom instead. Nothing else
  * is touched — the geometry is exactly what the package emits.
  */
+/**
+ * Counts avatars so their internal ids can be made unique without being random.
+ *
+ * `idRandomization` cannot simply be turned off here: ninety avatars in one document would then share
+ * gradient and mask ids, and the later ones would silently repaint the earlier ones. That is the bug the
+ * option exists to prevent. But leaving it on makes the build nondeterministic — `docs/index.html` shows
+ * a diff on every regeneration even when no artwork moved, which makes "is the published site stale?"
+ * unanswerable from `git status`, and that is the whole reason the file is committed.
+ *
+ * So: keep the randomisation, then rewrite each avatar's ids to a counter. Unique across the page,
+ * identical across builds.
+ */
+let avatarSeq = 0
+
 function avatar(options: Options): string {
-  return createAvatar(options)
+  const svg = createAvatar(options)
     .toString()
     .replace(/<metadata[\s\S]*?<\/metadata>/g, '')
     .replace(/<!--[\s\S]*?-->/g, '')
+
+  const n = avatarSeq++
+  let idSeq = 0
+
+  // Rewrite only strings that appear as an `id="…"`, and rewrite every reference to them by exact
+  // match. A blind regex over the whole document would risk chewing into path data.
+  return [...new Set(svg.match(/id="([^"]+)"/g) ?? [])]
+    .map((attr) => attr.slice(4, -1))
+    .reduce((out, id) => out.replaceAll(id, `a${n}-${idSeq++}`), svg)
 }
 
 /** Escapes text for HTML body context. */
@@ -304,12 +327,14 @@ const variantTable = componentNames
  * page's claim of zero external requests true for the favicon too, which is otherwise the one request a
  * static page makes without being asked.
  */
-const FAVICON = createAvatar({
-  seed: 'lexavataaars',
-  size: 64,
-  backgroundColor: ['e8e3d9'],
-  borderRadius: 50,
-} as Options).toDataUri()
+const FAVICON = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+  avatar({
+    seed: 'lexavataaars',
+    size: 64,
+    backgroundColor: ['e8e3d9'],
+    borderRadius: 50,
+  } as Options),
+)}`
 
 const CSS = `
 :root {
