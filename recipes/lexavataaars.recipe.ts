@@ -150,13 +150,31 @@ export const lexavataaars: Recipe = {
      * selection with a deterministic maximum-contrast pick, so eight hair values against five skin tones
      * would collapse to at most five hair colours in the whole style, and every pale-skinned figure
      * would get the same near-black hair. The variety is the point.
+     *
+     * Which leaves the other half of that failure to solve by hand, and it was still here. `notEqualTo`
+     * only rules out an EXACT match, and two of the forty hair-on-skin pairs were not exact matches but
+     * were indistinguishable: `#a55728` on `#ae5d29` and `#724133` on `#614335`. Measured on a weighted
+     * RGB metric the forty pairs score 19, 27, and then nothing until 52 — the two are outliers, not the
+     * tail of a distribution, which is why moving exactly two values fixes it. On the wall it showed as
+     * roughly one figure in twenty coming out bald: `sides` and `theCaesar` are short enough that hair
+     * within twenty units of the scalp under them simply is not there.
+     *
+     * They move to `#9d4528` and `#823933`, the nearest values that clear every skin tone by 55. Both
+     * drifts are under twenty units, so the palette still reads as the same eight colours.
      */
     hair: {
-      values: ['#a55728', '#2c1b18', '#b58143', '#d6b370', '#724133', '#4a312c', '#ddd2bc', '#d8d4d0'],
+      values: ['#9d4528', '#2c1b18', '#b58143', '#d6b370', '#823933', '#4a312c', '#ddd2bc', '#d8d4d0'],
       notEqualTo: ['skin'],
     },
+    /**
+     * The same list, with the same two values moved for the same reason, plus one more.
+     *
+     * A beard sits directly ON the skin rather than beside it, so `#ecdcbf` at 36 from `#ffdbb4` was the
+     * worst of the three: a pale blond beard on the palest skin was a faint smudge round the mouth. It
+     * moves to `#e2e0c3`, eleven units away, which is still flaxen.
+     */
     facialHair: {
-      values: ['#a55728', '#2c1b18', '#b58143', '#d6b370', '#724133', '#4a312c', '#ecdcbf', '#e8e1e1'],
+      values: ['#9d4528', '#2c1b18', '#b58143', '#d6b370', '#823933', '#4a312c', '#e2e0c3', '#e8e1e1'],
       notEqualTo: ['skin'],
     },
     /**
