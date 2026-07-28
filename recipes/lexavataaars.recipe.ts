@@ -244,11 +244,16 @@ export const lexavataaars: Recipe = {
      *
      * `#e6e6e6` was in this list and was the single worst render in the style: a near-white square cap
      * is a nurse's cap or a sailor's cap, and one of six draws landed on it. A biretta is black, or at
-     * most the dark of a faculty; there is no light one. What is left is five darks, which is also what
-     * keeps the cap legible at 16px, where it has to read against a pale skin tone.
+     * most the dark of a faculty; there is no light one.
+     *
+     * `#5b4a3f` went with it, for the same reason one step milder. Set beside upstream's turban the
+     * brown draw was the only one of the five that did not read as court dress — a warm mid-brown on a
+     * square cap is tweed, and the shape is close enough to a flat cap that the colour decides which of
+     * the two a viewer sees. The four that remain are cool darks, which is also what keeps the cap
+     * legible at 16px against a pale skin tone.
      */
     hat: {
-      values: ['#262e33', '#1c1c1e', '#3c4f5c', '#4a4f55', '#5b4a3f', '#2f3a33'],
+      values: ['#262e33', '#1c1c1e', '#3c4f5c', '#4a4f55', '#2f3a33'],
       notEqualTo: ['skin'],
     },
   },

@@ -1,6 +1,6 @@
 {
   "name": "lexavataaars",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Deterministic avatars for legal software \u2014 judges, prosecutors, notaries and advocates, in business formal and court dress. A DiceBear-compatible style.",
   "keywords": [
