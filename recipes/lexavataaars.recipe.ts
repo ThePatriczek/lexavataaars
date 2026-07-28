@@ -15,14 +15,15 @@
  * second, in that order, because upstream's problem is not that it lacks legal dress — it is that it is
  * relentlessly cheerful, and cheerfulness cannot be covered up by adding a gown over it.
  *
- * So: 103 variants in, 49 out. Every hat, hoodie, sweater, overall, graphic tee, party accessory and
+ * So: 103 variants in, 48 out. Every hat, hoodie, sweater, overall, graphic tee, party accessory and
  * sunglass is gone. Of twelve mouths one survived; of twelve eyes one; of thirteen brows one. One
  * component — `clothesGraphic` — was emptied and deleted outright rather than kept alive by a token
  * survivor.
  *
  * Then twelve garments were built on the blazer's own geometry (see `hand.ts`), plus a wig, a biretta,
- * two calmer mouths, two flat brows and a hooded eye. The success test is that a viewer should not be
- * able to tell which variants shipped and which were drawn.
+ * two calmer mouths and two flat brows. A hooded eye and a jabot were drawn and cut, and both notes are
+ * kept where they were drawn. The success test is that a viewer should not be able to tell which
+ * variants shipped and which were drawn.
  *
  * NO EXPRESSION, AND THIS IS MEASURED
  *
@@ -260,7 +261,7 @@ export const lexavataaars: Recipe = {
 
   components: {
     /**
-     * Dress. Fourteen variants, thirteen of them built here rather than shipped.
+     * Dress. Thirteen variants, twelve of them built here rather than shipped.
      *
      * The derivation chain is the point: shirt → +collar → +tie → +waistcoat → +jacket is one three-piece
      * suit assembled from four independent layers, and gown is the same jacket with its lapels replaced
@@ -393,7 +394,7 @@ export const lexavataaars: Recipe = {
    */
   canvasElements: () => [
     // Insetting the shoulders of the source's own skin torso, which shared its outline exactly with
-    // every garment drawn over it and printed a tan rim around all fourteen. See `insetSkinBody`.
+    // every garment drawn over it and printed a tan rim around all of them. See `insetSkinBody`.
     ...insetSkinBody(HEAD_ELEMENTS),
     /*
      * The eyes are drawn onto the canvas rather than published as a component.

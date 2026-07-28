@@ -6,7 +6,7 @@ formal and court dress.
 Generic avatar libraries give you playful robots, hoodies and grinning cartoons. In a product where
 people read case law and draft contracts, that reads as a mistake. `lexavataaars` gives you the same
 identity guarantee — one seed, one avatar, forever — dressed for the profession: suits, waistcoats,
-gowns, bands, jabot, the barrister's wig.
+gowns, bands, the barrister's wig.
 
 Faces are deliberately composed. There is no expression pool to draw from, because an avatar beside a
 case-law citation should not be feeling anything.
@@ -31,12 +31,12 @@ That is the whole API for the common case. Everything below is optional.
 
 ## Dressing the figure
 
-Fourteen garments, weighted so business formal is the common case and court dress the occasional one.
+Thirteen garments, weighted so business formal is the common case and court dress the occasional one.
 
 | | |
 | --- | --- |
 | **Business** | `shirtAndTie` `shirtAndBowTie` `suit` `suitAndWaistcoat` `suitAndBowTie` `suitAndCravat` `waistcoatAndTie` `waistcoatAndBowTie` `doubleBreastedSuit` `blazer` |
-| **Court & academic** | `gown` `gownAndBands` `gownAndJabot` `gownAndHood` |
+| **Court & academic** | `gown` `gownAndBands` `gownAndHood` |
 
 Twenty-two `top` variants cover hair plus the two pieces of court headwear, `wig` and `biretta`.
 

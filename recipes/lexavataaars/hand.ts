@@ -106,7 +106,7 @@ const COLLAR_RIGHT = 'M134 15.65c0 11.87-15 21.48-33.5 21.48l5.5 15.9c12-4 22-16
  * and points that fall from it, and the band is what gives the whole thing depth. It is the neckline
  * curve and the same curve dropped seven units, so it wraps the neck by construction.
  *
- * This is the highest-leverage drawing in the style: it appears in all fourteen garments.
+ * This is the highest-leverage drawing in the style: it appears in all thirteen garments.
  */
 const COLLAR_BAND =
   'M67 15.65C67 27.52 82 37.13 100.5 37.13 119 37.13 134 27.52 134 15.65' +
@@ -183,26 +183,52 @@ const bow: Element[] = [
  */
 const cravat: Element[] = [
   /*
-   * Bulged in the middle and tapered to a foot, because cloth gathered at the throat swells and then
-   * tucks away. Drawn first as a rounded rectangle with a pin at its centre it read, unmistakably, as a
-   * luggage tag — the straight sides and the dot together made it an object rather than a garment. The
-   * pin is gone and the silhouette does the work.
+   * Thirteen units at the throat, forty-one across the chest — and the second number is the whole
+   * variant.
+   *
+   * It was 21 units wide top to bottom and stopped at y = 66: a narrow teardrop hanging in a wide cream
+   * V, which is a short tie of an odd shape, not an ascot. Since `suitAndTie` is in the same wardrobe, a
+   * cravat that reads as a tie is not a variant at all — it is the same figure drawn worse. Breadth is
+   * the only thing that separates the two garments at any size, so it is what the drawing has to spend
+   * itself on.
+   *
+   * The taper is what makes that breadth read as cloth rather than as a bib. The collar's own flaps
+   * converge to about nine units apart by y = 50, so anything emerging between them must be narrow
+   * there; below them nothing constrains it and an ascot spreads. Opening from 13 to 41 by y = 62 traces
+   * exactly that, and 80..121 is roughly three quarters of the shirt visible between the lapels.
+   *
+   * Then it tucks back to 23 and runs to the hem, and both halves of that are load-bearing. Drawn broad
+   * all the way down it was a bib — a saturated field forty units across on a figure this size, in a
+   * style whose whole colour discipline is that exactly one element carries a hue. Stopped short with a
+   * rounded foot instead, it was an object hanging on a shirt rather than cloth going somewhere. An
+   * ascot swells at the throat and tucks away below, so it does both.
    */
-  path('M94 40h13q4 10 4 16 0 6.5-7 10.5a6 6 0 0 1-7 0Q90 62.5 90 56q0-6 4-16z', ACCENT),
+  path(
+    'M94 38L107 38C116 46 121 53 121 62C121 70 116 76 112 80L114 95.31H87L89 80' +
+      'C85 76 80 70 80 62C80 53 85 46 94 38z',
+    ACCENT,
+  ),
   /*
-   * The shadow's edge runs from x = 103, not from the centre line, and the highlight is a crescent
-   * rather than a band across the full width.
+   * The shadow's edge runs from x = 107 at the throat to x = 100.5 at the foot, not down the centre.
    *
-   * Both were symmetrical about x = 100.5, which is also the shape's own axis — so the light/dark
-   * terminator lay exactly along the fold the silhouette already implies, and at 6× the cravat read as
-   * two flat halves butted together with a seam down the middle. A light edge that coincides with an
-   * axis of symmetry always reads as a join. Offsetting it by two and a half units is enough for the
-   * shading to describe a rounded surface instead.
+   * Both shadow and highlight used to be symmetrical about x = 100.5, which is also the shape's own
+   * axis — so the light/dark terminator lay exactly along the fold the silhouette already implies, and
+   * at 6× the cravat read as two flat halves butted together with a seam down the middle. A terminator
+   * that coincides with an axis of symmetry always reads as a join. Slanting it across the form is what
+   * makes the same three fills describe a rounded surface.
    *
-   * The foot is rounded for the same reason the hood's is: cloth tucking away does not end in a point.
+   * The highlight is a rim down the left edge rather than a band across the top, and it borrows the
+   * body's own left-hand curves for its outer boundary, so it cannot print on the shirt beside it.
    */
-  shade('M103 40h4q4 10 4 16 0 6.5-7 10.5a6 6 0 0 1-3.5.9z', 0.12),
-  path('M94 40h9q-1.5 4-2 7-6 1.6-10.5-.2Q92.8 43 94 40z', 'white', { 'fill-opacity': '.16' }),
+  shade(
+    'M107 38C116 46 121 53 121 62C121 70 116 76 112 80L114 95.31H100.5L101.5 80C101.5 68 103.5 52 107 38z',
+    0.12,
+  ),
+  path(
+    'M94 38C85 46 80 53 80 62C80 70 85 76 89 80L87 95.31h6L91 79C88 75 87 69 87 62C87 54 91 47 98 39z',
+    'white',
+    { 'fill-opacity': '.16' },
+  ),
 ]
 
 /**
@@ -365,9 +391,9 @@ const bands: Element[] = [
    * Widened from 7.6 to 9, then lengthened from 31.5 to 42.
    *
    * Beside upstream's garments the first pair read as two hairlines; widening fixed that but left them
-   * stubby — they stopped a third of the way down the visible chest, and against the jabot in the same
-   * wardrobe they read as its top tier rather than as a different thing. Bands hang. At 42 they occupy
-   * the chest the way linen does and the two court variants no longer collapse into each other at 112px.
+   * stubby — they stopped a third of the way down the visible chest and read as a glyph rather than as
+   * cloth. Bands hang. At 42 they occupy the chest the way linen does, and they are now the only lace at
+   * the throat in the style, so they carry that read alone.
    */
   path('M90.6 38.5h9l-2.6 42a3.4 3.4 0 0 1-6.8-.35z', SHIRT),
   path('M110.4 38.5h-9l2.6 42a3.4 3.4 0 0 0 6.8-.35z', SHIRT),
@@ -378,36 +404,32 @@ const bands: Element[] = [
   shade('M110.4 38.5h-2.2l2.6 42a3.4 3.4 0 0 0 2.5 1.15z', 0.16),
 ]
 
-/**
- * Three falls of lace — the same construction at three scales, which is what a jabot is.
+/*
+ * A jabot was drawn here three times and cut, and the reason is structural rather than a matter of one
+ * more nudge.
  *
- * Same lesson as the bands: the tiers sit on a dark ground and are inset two units from it, so each fall
- * is outlined by the ground rather than by a shade line that white-on-white swallows.
+ * Attempt one was three rectangles at three scales — flat tops, vertical sides, scalloped bottoms, each
+ * capped with a literal white bar as its highlight. At 5x: piano keys. Attempt two made it one mass,
+ * widest at the hem with a scalloped bottom edge, which is not a metaphor for a bib but the actual shape
+ * of one. Attempt three inverted the taper — fullest at the throat, narrowing to a foot, with the ripple
+ * moved to the sides where a frilled edge belongs. That one is a cascade, and it reads as a cartoon
+ * cloud.
+ *
+ * The third failure is the informative one, because it is not about the drawing. Linen on linen has no
+ * edge, so a white jabot on a white shirt is invisible without a dark ground behind it. A dark ground
+ * around a broad shape IS an outline. A heavy outline around any lobed form reads as a sticker — and
+ * nothing upstream is outlined, so an outlined shape is foreign here at any weight. Thinning the ground
+ * to where it stops reading as an outline is exactly where it stops being visible at 96px, which is a
+ * size this ships at. There is no setting of that dial that is right at both ends.
+ *
+ * `gownAndBands` solves the same visibility problem and solves it properly: narrow tabs with generous
+ * dark AROUND them rather than a rim tracing them, so the dark is a garment part — a clerical stock —
+ * instead of an outline. That is the whole difference, and it is not available to a broad frill.
+ *
+ * So the wardrobe keeps three court variants that work rather than four with one that does not, and the
+ * two weights go back to `gown` and `gownAndBands`. A sibling style cut its jabot for the neighbouring
+ * reason (a repeated unit reading as a string of beads); the trap is real and worth recording.
  */
-const jabot: Element[] = [
-  /*
-   * Rebuilt after seeing it beside upstream's tailoring, where it read as a small stack of white keys.
-   *
-   * Three changes. The falls now WIDEN as they descend, the way cloth gathered at the throat actually
-   * hangs — three equal-width tiers are a stack of blocks, not a jabot. Each tier is lit on its upper
-   * face and shaded where the tier below tucks under it, so the stack has depth instead of being an
-   * outline drawing. And the ground now follows the lace rather than boxing it.
-   *
-   * Then scaled up: 21 → 41 units across the bottom tier and 22 → 32 units tall. At the old size it and
-   * `gownAndBands` were the same small white glyph on black at 112px, which is the size the product
-   * actually renders — two variants that cost a wardrobe slot each and were indistinguishable where it
-   * counted. A jabot's whole claim against bands is that it is broad and tiered where they are narrow
-   * and parallel, so it has to be visibly the wider of the two.
-   */
-  path(`${THROAT_SPAN}L122 68.5q-10.75 7-21.5 0-10.75 7-21.5 0z`, ROBE),
-  path('M88 37h25v6q-6.25 5.5-12.5 0-6.25 5.5-12.5 0z', SHIRT),
-  shade('M88 43q6.25 5.5 12.5 0 6.25 5.5 12.5 0v2.1q-6.25 5.5-12.5 0-6.25 5.5-12.5 0z', 0.09),
-  path('M84 46h33v8q-8.25 6.5-16.5 0-8.25 6.5-16.5 0z', SHIRT),
-  shade('M84 54q8.25 6.5 16.5 0 8.25 6.5 16.5 0v2.3q-8.25 6.5-16.5 0-8.25 6.5-16.5 0z', 0.09),
-  path('M80 57h41v10q-10.25 7-20.5 0-10.25 7-20.5 0z', SHIRT),
-  // The lit upper face of each fall, which is what makes them read as separate pieces of cloth.
-  path('M88 37h25v2.2H88zm-4 9h33v2.2H84zm-4 11h41v2.2H80z', 'white', { 'fill-opacity': '.5' }),
-]
 
 /**
  * Academic hood, as two bands over the shoulders.
@@ -435,7 +457,38 @@ const hood: Element[] = [
   path('M134 17c4 24 13 42 28 55l6-4.6C153 58 145 40 141 19z', 'white', { 'fill-opacity': '.22' }),
 ]
 
-const shirtBody = (torso: string): Element[] => [path(torso, SHIRT), shade(NECK_SHADOW, 0.1)]
+/**
+ * The roll of the shoulder, and the only thing that gives a shirt-only figure an edge.
+ *
+ * Measured rather than guessed. Sampling just inside the shoulder on a 200px render and comparing with
+ * the ground it sits on, `suit` scores 202 and `gown` 367 against a near-white page — and `shirtAndTie`
+ * scores 44. That is not a shirt that reads as pale, it is a torso with no silhouette: on any light
+ * surface the head floated above a tie with a faint suggestion of a body between them.
+ *
+ * The fix cannot be a background — the style is transparent by design and the consumer owns the ground —
+ * and it should not be a darker shirt, because the same colour group is the collar, the pocket square
+ * and the bands, all of which are read against dark cloth and would go muddy. So the shirt keeps its
+ * colour and gains the shading a real garment has: two nested crescents struck off the torso's OWN
+ * shoulder arcs, r = 72 down to 66 and again down to 60, at six per cent each. They compound to about
+ * twelve per cent in the outermost six units and fall off in one step, which reads as a shoulder turning
+ * away rather than as the outline it would be at a single hard weight. Edge contrast goes 44 → 133.
+ *
+ * Struck off the source's arcs, not drawn beside them, so it cannot drift off the shoulder — and applied
+ * ONLY where the shirt is the silhouette. Under a coat these would sit outside `TORSO_UNDER` and undo
+ * the inset that stopped the shoulder rim.
+ */
+const SHOULDER_ROLL: Element[] = [
+  shade('M0 95.31V86.36A72 72 0 0 1 67.05 14.53L67.46 20.52A66 66 0 0 0 6 86.36V95.31z', 0.06),
+  shade('M200 95.31V86.36A72 72 0 0 0 132.95 14.53L132.54 20.52A66 66 0 0 1 194 86.36V95.31z', 0.06),
+  shade('M0 95.31V86.36A72 72 0 0 1 67.05 14.53L67.88 26.5A60 60 0 0 0 12 86.36V95.31z', 0.06),
+  shade('M200 95.31V86.36A72 72 0 0 0 132.95 14.53L132.12 26.5A60 60 0 0 1 188 86.36V95.31z', 0.06),
+]
+
+const shirtBody = (torso: string, roll: Element[] = []): Element[] => [
+  path(torso, SHIRT),
+  ...roll,
+  shade(NECK_SHADOW, 0.1),
+]
 
 /**
  * Layer order is fixed everywhere: body, waistcoat, collar, neckwear, outer garment.
@@ -445,7 +498,7 @@ const shirtBody = (torso: string): Element[] => [path(torso, SHIRT), shade(NECK_
  * goes underneath — see `TORSO_UNDER`.
  */
 function garment(...layers: Element[][]): { elements: Element[] } {
-  return { elements: [...shirtBody(TORSO), ...layers.flat()] }
+  return { elements: [...shirtBody(TORSO, SHOULDER_ROLL), ...layers.flat()] }
 }
 
 function coated(...layers: Element[][]): { elements: Element[] } {
@@ -468,9 +521,8 @@ export const CLOTHES_VARIANTS: Record<string, { elements: Element[]; weight: num
   // Upstream's blazer, worn open — kept because it is the one garment that shipped with the style and
   // still belongs in the room.
   blazer: { ...coated(collar, jacket), weight: 4 },
-  gown: { ...coated(collar, gown), weight: 3 },
-  gownAndBands: { ...coated(collar, bands, gown), weight: 4 },
-  gownAndJabot: { ...coated(collar, jabot, gown), weight: 2 },
+  gown: { ...coated(collar, gown), weight: 4 },
+  gownAndBands: { ...coated(collar, bands, gown), weight: 5 },
   gownAndHood: { ...coated(collar, bands, gown, hood), weight: 3 },
 }
 
