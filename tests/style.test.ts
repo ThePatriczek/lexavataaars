@@ -117,6 +117,37 @@ describe('createAvatar', () => {
     }
   })
 
+  /*
+   * DiceBear treats an unrecognised variant as "no match" and drops the whole component, so pinning a
+   * variant that has been cut renders a figure with no clothes — silently. `gownAndJabot` shipped in
+   * 0.2.0 and is gone in 0.3.0, which makes that an upgrade path real consumers are on, and a bare torso
+   * is the worst shape a mistake can take because it survives every check short of looking.
+   */
+  test('rejects a variant the style does not have rather than rendering nothing', () => {
+    expect(() => createAvatar({ seed: 'cut', clothesVariant: 'gownAndJabot' as never })).toThrow(
+      /unknown clothesVariant "gownAndJabot"/,
+    )
+    expect(() => createAvatar({ seed: 'typo', topVariant: 'Wig' as never })).toThrow(/unknown topVariant/)
+    // ...including when it is one name among several in an array, which is the form that hides it best.
+    expect(() => createAvatar({ seed: 'arr', clothesVariant: ['suit', 'nope'] as never })).toThrow(/"nope"/)
+  })
+
+  test('leaves every variant the style does have alone', () => {
+    const components = (styleDefinition as unknown as {
+      components: Record<string, { variants: Record<string, unknown> }>
+    }).components
+
+    for (const [component, spec] of Object.entries(components)) {
+      for (const variant of Object.keys(spec.variants)) {
+        expect(() =>
+          createAvatar({ seed: 'all', [`${component}Variant`]: variant } as never),
+        ).not.toThrow()
+      }
+    }
+    expect(() => createAvatar({ seed: 'plain' })).not.toThrow()
+    expect(() => createAvatar({ seed: 'colour', clothesColor: ['#123456'] })).not.toThrow()
+  })
+
   test('honours a pinned variant, which is how consumers build presets', () => {
     const svg = createAvatar({ seed: 'anything', idRandomization: false, clothesVariant: 'gown' }).toString()
 
