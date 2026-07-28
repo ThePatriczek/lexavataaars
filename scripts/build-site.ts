@@ -133,7 +133,6 @@ const WARDROBE: Record<string, string> = {
   blazer: 'Worn open over the shirt. The one garment inherited from upstream unchanged.',
   gown: 'Court and academic dress: the jacket with its lapels replaced by silk facings and its fronts swung out.',
   gownAndBands: 'The gown with barrister’s bands at the throat — the most legible legal silhouette in the set.',
-  gownAndJabot: 'The gown with a jabot, as worn on the continental bench.',
   gownAndHood: 'The academic gown with a hood, the one place the accent colour lands on a robe.',
 }
 
@@ -191,6 +190,26 @@ function variantsOf(component: string): string[] {
 const wall = WALL_SEEDS.map(
   (seed) => `<figure class="cell"><div class="face">${avatar({ seed, size: 96 })}</div></figure>`,
 ).join('')
+
+/*
+ * The page is only as honest as this check makes it.
+ *
+ * `WARDROBE` is iterated to build the wardrobe section, so a garment cut from the artwork stayed on the
+ * page with a working caption and a rendered figure until someone happened to notice — which is exactly
+ * the drift a generated site exists to prevent. `gownAndJabot` survived one such cut that way. Comparing
+ * the two lists costs nothing and turns a silent wrong page into a failed build.
+ */
+const definedClothes = variantsOf('clothes')
+const wardrobeNames = Object.keys(WARDROBE)
+const missingNote = definedClothes.filter((v) => !wardrobeNames.includes(v))
+const staleNote = wardrobeNames.filter((v) => !definedClothes.includes(v))
+if (missingNote.length || staleNote.length) {
+  throw new Error(
+    `build-site: WARDROBE is out of step with the definition.` +
+      (missingNote.length ? ` Missing a note for: ${missingNote.join(', ')}.` : '') +
+      (staleNote.length ? ` Note for a variant that no longer exists: ${staleNote.join(', ')}.` : ''),
+  )
+}
 
 const wardrobe = Object.entries(WARDROBE)
   .map(([variant, note], i) => {
