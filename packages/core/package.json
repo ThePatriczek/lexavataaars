@@ -2,8 +2,16 @@
   "name": "lexavataaars",
   "version": "0.1.0",
   "type": "module",
-  "description": "Deterministic avatars for legal software — judges, prosecutors, notaries and advocates, in business formal and court dress. A DiceBear-compatible style.",
-  "keywords": ["avatar", "dicebear", "legal", "legaltech", "svg", "identicon", "avataaars"],
+  "description": "Deterministic avatars for legal software \u2014 judges, prosecutors, notaries and advocates, in business formal and court dress. A DiceBear-compatible style.",
+  "keywords": [
+    "avatar",
+    "dicebear",
+    "legal",
+    "legaltech",
+    "svg",
+    "identicon",
+    "avataaars"
+  ],
   "license": "MIT",
   "author": "Patrik Szewczyk",
   "repository": {
@@ -24,13 +32,18 @@
   },
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "bun run build:js && bun run build:types && bun run build:json",
+    "build": "bun run build:js && bun run build:types && bun run build:json && bun run build:docs",
     "build:js": "bun build src/index.ts --outdir dist --target node --format esm --external '@dicebear/core'",
     "build:types": "tsc -p tsconfig.build.json",
     "build:json": "cp src/styles/lexavataaars.json dist/lexavataaars.json",
-    "prepublishOnly": "bun run build"
+    "prepublishOnly": "bun run build",
+    "build:docs": "cp ../../LICENSE ../../README.md ."
   },
   "dependencies": {
     "@dicebear/core": "^10.3.1"

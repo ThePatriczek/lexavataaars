@@ -14,3 +14,5 @@ dist/
 
 # Build output
 dist/
+packages/core/LICENSE
+packages/core/README.md
